@@ -23,9 +23,25 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
-    <main class="container mx-auto mt-28 px-5 flex">
-      <%= yield %>
-    </main>
-  </body>
+<body class="bg-gray-50 text-gray-900">
+  <nav class="bg-white border-b border-gray-200">
+    <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+      <%= link_to "Linguio", root_path, class: "text-2xl font-bold text-indigo-600" %>
+
+      <div class="space-x-6">
+        <%= link_to "Courses", "#", class: "text-gray-700 hover:text-indigo-600" %>
+        <%= link_to "Progress", "#", class: "text-gray-700 hover:text-indigo-600" %>
+        <%= link_to "Login", "#", class: "text-gray-700 hover:text-indigo-600" %>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <%= yield %>
+  </main>
+
+  <footer class="mt-20 py-8 text-center text-gray-500">
+    © <%= Time.current.year %> Linguio
+  </footer>
+</body>
 </html>
