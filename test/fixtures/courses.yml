@@ -9,3 +9,6 @@ two:
   title: MyString
   description: MyText
   level: MyString
+french:
+  title: French Basics
+  description: Introduction to French
