@@ -1,0 +1,9 @@
+<div class="space-y-2">
+  <% exercise.content["pairs"].each do |pair| %>
+    <div class="flex items-center gap-4">
+      <span class="font-medium"><%= pair["left"] %></span>
+      <span class="text-gray-400">&rarr;</span>
+      <span><%= pair["right"] %></span>
+    </div>
+  <% end %>
+</div>

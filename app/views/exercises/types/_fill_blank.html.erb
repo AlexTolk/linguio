@@ -1,0 +1,10 @@
+<div class="space-y-4">
+  <% exercise.content["questions"].each do |q| %>
+    <div>
+      <p class="font-medium"><%= q["sentence"] %></p>
+      <% if q["hint"].present? %>
+        <p class="text-sm text-gray-400"><%= q["hint"] %></p>
+      <% end %>
+    </div>
+  <% end %>
+</div>

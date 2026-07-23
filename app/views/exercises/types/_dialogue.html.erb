@@ -1,0 +1,8 @@
+<div class="space-y-3">
+  <% exercise.content["lines"].each do |line| %>
+    <div>
+      <p><span class="font-semibold"><%= line["speaker"] %>:</span> <%= line["text"] %></p>
+      <p class="text-sm text-gray-400"><%= line["translation"] %></p>
+    </div>
+  <% end %>
+</div>

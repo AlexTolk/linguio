@@ -1,0 +1,11 @@
+<div class="grid gap-4 sm:grid-cols-2">
+  <% exercise.content["cards"].each do |card| %>
+    <div class="border rounded-lg p-4 bg-white shadow-sm">
+      <p class="text-lg font-medium"><%= card["front"] %></p>
+      <p class="text-gray-500"><%= card["back"] %></p>
+      <% if card["example"].present? %>
+        <p class="text-sm text-gray-400 italic mt-2"><%= card["example"] %></p>
+      <% end %>
+    </div>
+  <% end %>
+</div>

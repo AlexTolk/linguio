@@ -1,17 +1,13 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
+  lesson: one
   title: MyString
-  content: MyText
+  section_type: MyString
   position: 1
-  course_section: one
 
 two:
+  lesson: two
   title: MyString
-  content: MyText
+  section_type: MyString
   position: 1
-  course_section: two
-
-bonjour:
-  title: Greetings
-  course: french
