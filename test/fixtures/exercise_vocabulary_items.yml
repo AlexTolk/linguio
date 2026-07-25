@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  exercise: one
+  vocabulary_item: one
+  position: 1
+
+two:
+  exercise: two
+  vocabulary_item: two
+  position: 1

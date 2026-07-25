@@ -1,8 +1,6 @@
 Rails.application.routes.draw do
-  get "exercises/show"
-  get "lessons/show"
-  get "courses/index"
-  get "courses/show"
+  devise_for :users
+
   root "home#index"
   resources :courses, only: [ :index, :show ]
   resources :lessons, only: [:show] do
