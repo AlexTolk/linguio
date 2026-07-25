@@ -1,0 +1,15 @@
+<div class="max-w-2xl mx-auto py-8 px-4">
+
+  <h1 class="text-3xl font-bold mb-2">
+    <%= @lesson.title %>
+  </h1>
+
+  <h2 class="text-xl font-semibold mb-6 text-gray-600">
+    <%= @lesson_section.title %>
+  </h2>
+
+  <div class="border rounded-lg p-6 mb-8">
+    <%= render "exercises/exercise", exercise: @exercise %>
+  </div>
+
+</div>
