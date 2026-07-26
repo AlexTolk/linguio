@@ -2,12 +2,18 @@
 
 one:
   lesson_section: one
-  exercise_type: MyString
-  content: 
+  exercise_type: fill_blank
+  content:
+    questions:
+      - sentence: "Fill in the blank"
+        hint: "A short hint"
   position: 1
 
 two:
   lesson_section: two
-  exercise_type: MyString
-  content: 
+  exercise_type: fill_blank
+  content:
+    questions:
+      - sentence: "Bonjour, complétez"
+        hint: "Indice"
   position: 1

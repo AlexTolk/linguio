@@ -11,5 +11,8 @@ module ActiveSupport
     fixtures :all
 
     # Add more helper methods to be used by all tests here...
+
+    # Devise helpers for integration tests (allow sign_in in tests)
+    include Devise::Test::IntegrationHelpers
   end
 end

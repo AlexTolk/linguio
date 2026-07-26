@@ -1,6 +1,6 @@
 # Seeds the first real Linguio lesson end-to-end:
 #   Course (French A1) -> CourseSection (Greetings) -> Lesson (Bonjour)
-#     -> LessonSection (Vocabulary)   -> Exercise (flashcards)
+#     -> LessonSection (Vocabulary)   -> Exercise (flashcard) x4
 #     -> LessonSection (Vocabulary)   -> Exercise (matching)
 #     -> LessonSection (Grammar)      -> Exercise (fill_blank)
 #     -> LessonSection (Conversation) -> Exercise (dialogue)
@@ -29,18 +29,26 @@ vocabulary_section = lesson.lesson_sections.find_or_create_by!(title: "Vocabular
   ls.position = 1
 end
 
-vocabulary_section.exercises.find_or_create_by!(exercise_type: "flashcards", position: 1) do |e|
-  e.content = {
-    cards: [
-      { front: "bonjour", back: "hello",   part_of_speech: "interjection", example: "Bonjour, Marie !" },
-      { front: "merci",   back: "thank you", part_of_speech: "interjection", example: "Merci beaucoup !" },
-      { front: "salut",   back: "hi / bye", part_of_speech: "interjection", example: "Salut, à bientôt !" },
-      { front: "s'il vous plaît", back: "please", part_of_speech: "phrase", example: "Un café, s'il vous plaît." }
-    ]
-  }
+# One Exercise row per flashcard, matching the locked contract:
+#   content: { front: { word: }, back: { translation:, example: } }
+flashcards = [
+  { word: "bonjour",         translation: "hello",     example: "Bonjour, Marie !" },
+  { word: "merci",           translation: "thank you", example: "Merci beaucoup !" },
+  { word: "salut",           translation: "hi / bye",  example: "Salut, à bientôt !" },
+  { word: "s'il vous plaît", translation: "please",    example: "Un café, s'il vous plaît." }
+]
+
+flashcards.each_with_index do |card, index|
+  vocabulary_section.exercises.find_or_initialize_by(exercise_type: "flashcard", position: index + 1).tap do |e|
+    e.content = {
+      front: { word: card[:word] },
+      back: { translation: card[:translation], example: card[:example] }
+    }
+    e.save!
+  end
 end
 
-vocabulary_section.exercises.find_or_create_by!(exercise_type: "matching", position: 2) do |e|
+vocabulary_section.exercises.find_or_create_by!(exercise_type: "matching", position: flashcards.size + 1) do |e|
   e.content = {
     pairs: [
       { left: "chat",   right: "cat" },
@@ -61,9 +69,9 @@ end
 grammar_section.exercises.find_or_create_by!(exercise_type: "fill_blank", position: 1) do |e|
   e.content = {
     questions: [
-      { sentence: "Je ___ français.",  answer: "parle",  alternatives: ["parle"],  hint: "verb: parler" },
-      { sentence: "Tu ___ anglais.",   answer: "parles", alternatives: ["parles"], hint: "verb: parler" },
-      { sentence: "Elle ___ espagnol.", answer: "parle", alternatives: ["parle"],  hint: "verb: parler" }
+      { sentence: "Je ___ français.",   answer: "parle",  alternatives: ["parle"],  hint: "verb: parler" },
+      { sentence: "Tu ___ anglais.",    answer: "parles", alternatives: ["parles"], hint: "verb: parler" },
+      { sentence: "Elle ___ espagnol.", answer: "parle",  alternatives: ["parle"],  hint: "verb: parler" }
     ]
   }
 end
@@ -78,10 +86,10 @@ end
 conversation_section.exercises.find_or_create_by!(exercise_type: "dialogue", position: 1) do |e|
   e.content = {
     lines: [
-      { speaker: "Marie", text: "Bonjour !",             translation: "Hello!" },
-      { speaker: "Paul",  text: "Bonjour ! Comment ça va ?", translation: "Hello! How are you?" },
-      { speaker: "Marie", text: "Ça va bien, merci. Et toi ?", translation: "I'm doing well, thanks. And you?" },
-      { speaker: "Paul",  text: "Ça va, merci !",          translation: "I'm good, thanks!" }
+      { speaker: "Marie", text: "Bonjour !",                     translation: "Hello!" },
+      { speaker: "Paul",  text: "Bonjour ! Comment ça va ?",      translation: "Hello! How are you?" },
+      { speaker: "Marie", text: "Ça va bien, merci. Et toi ?",    translation: "I'm doing well, thanks. And you?" },
+      { speaker: "Paul",  text: "Ça va, merci !",                 translation: "I'm good, thanks!" }
     ]
   }
 end

@@ -9,3 +9,8 @@ two:
   title: MyString
   position: 1
   course: two
+
+french:
+  title: French Section
+  position: 1
+  course: french

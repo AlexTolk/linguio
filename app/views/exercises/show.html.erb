@@ -9,7 +9,24 @@
   </h2>
 
   <div class="border rounded-lg p-6 mb-8">
-    <%= render "exercises/exercise", exercise: @exercise %>
+    <% if params[:revealed] %>
+      <h3 class="text-2xl font-bold mb-4"><%= @exercise.content.dig("front", "word") %></h3>
+      <p class="text-lg text-gray-800 mb-1"><%= @exercise.content.dig("back", "translation") %></p>
+      <p class="text-sm text-gray-500 italic mb-6"><%= @exercise.content.dig("back", "example") %></p>
+
+      <%= form_with url: submit_lesson_lesson_section_exercise_path(@lesson, @lesson_section, @exercise), class: "flex gap-3" do %>
+        <button name="known" value="true" class="px-4 py-2 rounded-md bg-green-600 text-white font-medium hover:bg-green-700">
+          I knew it
+        </button>
+        <button name="known" value="false" class="px-4 py-2 rounded-md bg-red-600 text-white font-medium hover:bg-red-700">
+          I didn't know it
+        </button>
+      <% end %>
+    <% else %>
+      <h3 class="text-2xl font-bold mb-4"><%= @exercise.content.dig("front", "word") %></h3>
+      <%= link_to "Reveal", lesson_lesson_section_exercise_path(@lesson, @lesson_section, @exercise, revealed: true),
+            class: "inline-block px-4 py-2 rounded-md bg-indigo-600 text-white font-medium hover:bg-indigo-700" %>
+    <% end %>
   </div>
 
 </div>
