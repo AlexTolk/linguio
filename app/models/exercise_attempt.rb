@@ -1,6 +1,7 @@
 class ExerciseAttempt < ApplicationRecord
   belongs_to :user
   belongs_to :exercise
+  has_many :exercise_attempt_answers, dependent: :destroy
 
   enum :status, {
     not_started: 0,

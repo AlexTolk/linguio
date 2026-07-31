@@ -1,9 +1,20 @@
-<div class="space-y-2">
-  <% exercise.content["pairs"].each do |pair| %>
-    <div class="flex items-center gap-4">
-      <span class="font-medium"><%= pair["left"] %></span>
-      <span class="text-gray-400">&rarr;</span>
-      <span><%= pair["right"] %></span>
+<div class="space-y-4">
+  <% right_options = exercise.content["pairs"].map { |p| p["right"] }.shuffle %>
+
+  <%= form_with url: submit_lesson_lesson_section_exercise_path(lesson, lesson_section, exercise) do %>
+    <div class="space-y-3">
+      <% exercise.content["pairs"].each do |pair| %>
+        <div class="flex items-center gap-4">
+          <span class="font-medium w-32"><%= pair["left"] %></span>
+          <%= select_tag "matches[#{pair['left']}]",
+                options_for_select([["Choose...", ""]] + right_options.map { |r| [r, r] }),
+                class: "border rounded-md px-3 py-1" %>
+        </div>
+      <% end %>
     </div>
+
+    <button type="submit" class="mt-4 px-4 py-2 rounded-md bg-indigo-600 text-white font-medium hover:bg-indigo-700">
+      Submit
+    </button>
   <% end %>
 </div>

@@ -10,6 +10,10 @@ class Exercise < ApplicationRecord
     next_in_section || first_exercise_of_next_section
   end
 
+  def partial_path
+    exercise_type == "flashcard" ? "exercises/types/flashcards" : "exercises/types/#{exercise_type}"
+  end
+
   private
 
   def next_in_section

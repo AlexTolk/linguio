@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_25_063516) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_31_104914) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -30,6 +30,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_25_063516) do
     t.string "level"
     t.string "title"
     t.datetime "updated_at", null: false
+  end
+
+  create_table "exercise_attempt_answers", force: :cascade do |t|
+    t.boolean "correct"
+    t.string "correct_answer"
+    t.datetime "created_at", null: false
+    t.bigint "exercise_attempt_id", null: false
+    t.string "given_answer"
+    t.string "item_key"
+    t.datetime "updated_at", null: false
+    t.index ["exercise_attempt_id"], name: "index_exercise_attempt_answers_on_exercise_attempt_id"
   end
 
   create_table "exercise_attempts", force: :cascade do |t|
@@ -132,6 +143,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_25_063516) do
   end
 
   add_foreign_key "course_sections", "courses"
+  add_foreign_key "exercise_attempt_answers", "exercise_attempts"
   add_foreign_key "exercise_attempts", "exercises"
   add_foreign_key "exercise_attempts", "users"
   add_foreign_key "exercise_vocabulary_items", "exercises"

@@ -1,18 +1,36 @@
 <div class="max-w-2xl mx-auto py-8 px-4">
-  <h1 class="text-3xl font-bold mb-8"><%= @lesson.title %></h1>
+  <h1 class="text-3xl font-bold mb-2"><%= @lesson.title %></h1>
+
+  <% if user_signed_in? %>
+    <% if @lesson.completed_by?(current_user) %>
+      <p class="mb-8 text-green-700 font-medium">
+        Lesson complete — average score: <%= @lesson.score_for(current_user) %>%
+      </p>
+    <% else %>
+      <p class="mb-8 text-gray-500">Not yet completed</p>
+    <% end %>
+  <% end %>
 
   <% @lesson.lesson_sections.each do |section| %>
     <section class="mb-10">
-      <h2 class="text-xl font-semibold mb-4"><%= section.title %></h2>
+      <h2 class="text-xl font-semibold mb-1"><%= section.title %></h2>
+
+      <% if user_signed_in? && (score = section.score_for(current_user)) %>
+        <p class="text-sm text-gray-500 mb-4">Section score: <%= score %>%</p>
+      <% else %>
+        <p class="mb-4"></p>
+      <% end %>
 
       <% section.exercises.each do |exercise| %>
-        <%= link_to "Start",
-            lesson_lesson_section_exercise_path(
-              @lesson,
-              section,
-              exercise
-          ),
-          class: "inline-block mt-4 px-4 py-2 rounded bg-black text-white" %>
+        <% score = @latest_scores[exercise.id] %>
+        <div class="flex items-center gap-3 mt-2">
+          <%= link_to (score ? "Review" : "Start"),
+              lesson_lesson_section_exercise_path(@lesson, section, exercise),
+              class: "inline-block px-4 py-2 rounded bg-black text-white" %>
+          <% if score %>
+            <span class="text-sm text-gray-500"><%= score %>%</span>
+          <% end %>
+        </div>
       <% end %>
     </section>
   <% end %>

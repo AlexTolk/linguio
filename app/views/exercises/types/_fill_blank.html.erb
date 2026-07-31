@@ -1,10 +1,17 @@
-<div class="space-y-4">
-  <% exercise.content["questions"].each do |q| %>
-    <div>
-      <p class="font-medium"><%= q["sentence"] %></p>
-      <% if q["hint"].present? %>
-        <p class="text-sm text-gray-400"><%= q["hint"] %></p>
-      <% end %>
-    </div>
+<div class="space-y-6">
+  <%= form_with url: submit_lesson_lesson_section_exercise_path(lesson, lesson_section, exercise) do %>
+    <% exercise.content["questions"].each_with_index do |q, i| %>
+      <div class="mb-4">
+        <p class="font-medium mb-1"><%= q["sentence"] %></p>
+        <% if q["hint"].present? %>
+          <p class="text-sm text-gray-400 mb-1"><%= q["hint"] %></p>
+        <% end %>
+        <%= text_field_tag "answers[#{i}]", nil, class: "border rounded-md px-3 py-1", autocomplete: "off" %>
+      </div>
+    <% end %>
+
+    <button type="submit" class="px-4 py-2 rounded-md bg-indigo-600 text-white font-medium hover:bg-indigo-700">
+      Submit
+    </button>
   <% end %>
 </div>

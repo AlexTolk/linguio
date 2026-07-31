@@ -5,4 +5,7 @@
       <p class="text-sm text-gray-400"><%= line["translation"] %></p>
     </div>
   <% end %>
+
+  <%= button_to "Continue", submit_lesson_lesson_section_exercise_path(lesson, lesson_section, exercise),
+        method: :post, class: "mt-4 px-4 py-2 rounded-md bg-indigo-600 text-white font-medium hover:bg-indigo-700" %>
 </div>
