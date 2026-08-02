@@ -3,6 +3,15 @@ class LessonsController < ApplicationController
     @lesson = Lesson.includes(lesson_sections: :exercises).find(params[:id])
     @latest_scores = latest_scores_by_exercise
   end
+  def complete
+    @lesson = Lesson.includes(lesson_sections: :exercises).find(params[:id])
+
+    unless @lesson.completed_by?(current_user)
+      redirect_to @lesson, notice: "Finish all exercises to see your results." and return
+    end
+
+    @score = @lesson.score_for(current_user)
+  end
 
   private
 

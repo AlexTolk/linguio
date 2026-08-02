@@ -20,15 +20,13 @@ class ExercisesController < ApplicationController
       result[:answers].each { |a| attempt.exercise_attempt_answers.create!(a) }
     end
 
-    next_exercise = @exercise.next_exercise
+    redirect_to result_lesson_lesson_section_exercise_path(
+      @lesson, @lesson_section, @exercise, attempt_id: attempt.id
+    )
+  end
 
-    if next_exercise
-      redirect_to lesson_lesson_section_exercise_path(
-        next_exercise.lesson, next_exercise.lesson_section, next_exercise
-      )
-    else
-      redirect_to @lesson, notice: "Lesson complete!"
-    end
+  def result
+    @attempt = @exercise.exercise_attempts.for_user(current_user).find(params[:attempt_id])
   end
 
   private
@@ -48,8 +46,6 @@ class ExercisesController < ApplicationController
     when "fill_blank"
       score_fill_blank
     when "dialogue"
-      # No comprehension questions yet — full credit for completing the
-      # read-through. Swap this for real scoring once questions exist.
       { score: 100, answers: [] }
     else
       raise ArgumentError, "Unknown exercise_type: #{@exercise.exercise_type}"
@@ -70,7 +66,12 @@ class ExercisesController < ApplicationController
       }
     end
 
-    score = ((answers.count { |a| a[:correct] }.to_f / answers.size) * 100).round
+    score = if answers.any?
+    ((answers.count { |a| a[:correct] }.to_f / answers.size) * 100).round
+    else
+      0
+    end
+
     { score: score, answers: answers }
   end
 
@@ -91,7 +92,12 @@ class ExercisesController < ApplicationController
       }
     end
 
-    score = ((answers.count { |a| a[:correct] }.to_f / answers.size) * 100).round
+    score = if answers.any?
+      ((answers.count { |a| a[:correct] }.to_f / answers.size) * 100).round
+    else
+      0
+    end
+    
     { score: score, answers: answers }
   end
 end

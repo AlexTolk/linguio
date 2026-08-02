@@ -1,0 +1,58 @@
+<div class="max-w-2xl mx-auto py-8 px-4">
+
+  <h1 class="text-3xl font-bold mb-2">
+    <%= @lesson.title %>
+  </h1>
+
+  <h2 class="text-xl font-semibold mb-6 text-gray-600">
+    <%= @lesson_section.title %>
+  </h2>
+
+  <% good = @attempt.score >= 70 %>
+  <% next_exercise = @exercise.next_exercise %>
+  <% crossing_section = next_exercise && next_exercise.lesson_section_id != @exercise.lesson_section_id %>
+
+  <div class="border rounded-lg p-6 mb-6 <%= good ? "bg-green-50 border-green-200" : "bg-amber-50 border-amber-200" %>">
+    <p class="text-2xl font-bold mb-1">
+      <% if @exercise.exercise_type == "flashcard" %>
+        <%= good ? "Nice — you knew it!" : "Good to know — you'll see this again" %>
+      <% else %>
+        <%= good ? "Good job!" : "Not quite — try again?" %>
+      <% end %>
+    </p>
+    <p class="text-gray-600">Score: <%= @attempt.score %>%</p>
+  </div>
+
+  <% if @attempt.exercise_attempt_answers.any? %>
+    <div class="border rounded-lg p-6 mb-6">
+      <ul class="space-y-2">
+        <% @attempt.exercise_attempt_answers.each do |answer| %>
+          <li class="<%= answer.correct? ? "text-green-700" : "text-red-700" %>">
+            <%= answer.item_key %>: <%= answer.given_answer.presence || "(blank)" %>
+            <% unless answer.correct? %>
+              — correct answer: <%= answer.correct_answer %>
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="flex gap-3">
+    <% if !good && @exercise.exercise_type != "flashcard" %>
+      <%= link_to "Try Again",
+            lesson_lesson_section_exercise_path(@lesson, @lesson_section, @exercise),
+            class: "inline-block px-4 py-2 rounded-md border border-gray-300 text-gray-700 font-medium hover:bg-gray-50" %>
+    <% end %>
+
+    <% if next_exercise %>
+      <%= link_to (crossing_section ? "Continue to #{next_exercise.lesson_section.title} →" : "Continue"),
+            lesson_lesson_section_exercise_path(next_exercise.lesson, next_exercise.lesson_section, next_exercise),
+            class: "inline-block px-4 py-2 rounded-md bg-indigo-600 text-white font-medium hover:bg-indigo-700" %>
+    <% else %>
+      <%= link_to "Finish Lesson", complete_lesson_path(@lesson),
+        class: "inline-block px-4 py-2 rounded-md bg-indigo-600 text-white font-medium hover:bg-indigo-700" %>
+    <% end %>
+  </div>
+
+</div>

@@ -1,0 +1,35 @@
+<div class="max-w-2xl mx-auto py-12 px-4 text-center">
+
+  <h1 class="text-3xl font-bold mb-2">Lesson Complete!</h1>
+  <h2 class="text-xl text-gray-600 mb-8"><%= @lesson.title %></h2>
+
+  <div class="border rounded-lg p-8 mb-8 <%= @score >= 70 ? "bg-green-50 border-green-200" : "bg-amber-50 border-amber-200" %>">
+    <p class="text-5xl font-bold mb-2"><%= @score %>%</p>
+    <p class="text-gray-600">Overall score</p>
+  </div>
+
+  <div class="text-left mb-8">
+    <h3 class="text-lg font-semibold mb-3">Section breakdown</h3>
+    <ul class="space-y-2">
+      <% @lesson.lesson_sections.each do |section| %>
+        <li class="flex justify-between border-b pb-2">
+          <span><%= section.title %></span>
+          <span class="font-medium"><%= section.score_for(current_user) %>%</span>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+
+  <div class="flex gap-3 justify-center">
+    <% first_exercise = @lesson.first_exercise %>
+    <% if first_exercise %>
+      <%= link_to "Retry Lesson",
+            lesson_lesson_section_exercise_path(@lesson, first_exercise.lesson_section, first_exercise),
+            class: "inline-block px-4 py-2 rounded-md border border-gray-300 text-gray-700 font-medium hover:bg-gray-50" %>
+    <% end %>
+
+    <%= link_to "Back to Course", course_path(@lesson.course_section.course),
+          class: "inline-block px-4 py-2 rounded-md bg-indigo-600 text-white font-medium hover:bg-indigo-700" %>
+  </div>
+
+</div>

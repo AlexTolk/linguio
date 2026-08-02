@@ -14,6 +14,10 @@ class Lesson < ApplicationRecord
     (exercise_ids - attempted_ids).empty?
   end
 
+  def first_exercise
+    lesson_sections.first&.exercises&.order(:position)&.first
+  end
+
   # Average of each exercise's most recent completed attempt.
   # Returns nil if the user hasn't attempted anything in this lesson yet.
   def score_for(user)
