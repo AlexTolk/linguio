@@ -1,0 +1,32 @@
+<div class="flex justify-between items-center mb-6">
+  <h1 class="text-2xl font-bold">Courses</h1>
+  <%= link_to "New Course", new_admin_course_path, class: "bg-blue-600 text-white px-4 py-2 rounded" %>
+</div>
+
+<table class="w-full bg-white rounded shadow-sm">
+  <thead class="bg-gray-100 text-left text-sm text-gray-600">
+    <tr>
+      <th class="px-4 py-2">Title</th>
+      <th class="px-4 py-2">Language</th>
+      <th class="px-4 py-2">Level</th>
+      <th class="px-4 py-2">Sections</th>
+      <th class="px-4 py-2"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @courses.each do |course| %>
+      <tr class="border-t">
+        <td class="px-4 py-2"><%= link_to course.title, admin_course_path(course) %></td>
+        <td class="px-4 py-2"><%= course.language %></td>
+        <td class="px-4 py-2"><%= course.level %></td>
+        <td class="px-4 py-2"><%= course.course_sections.count %></td>
+        <td class="px-4 py-2 text-right space-x-2">
+          <%= link_to "Edit", edit_admin_course_path(course), class: "text-blue-600" %>
+          <%= button_to "Delete", admin_course_path(course), method: :delete,
+                data: { turbo_confirm: "Delete this course and everything under it?" },
+                class: "text-red-600 inline" %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

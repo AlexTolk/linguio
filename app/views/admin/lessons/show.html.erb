@@ -1,0 +1,33 @@
+<div class="flex justify-between items-start mb-6">
+  <div>
+    <h1 class="text-2xl font-bold"><%= @lesson.title %></h1>
+    <p class="text-gray-500"><%= @course_section.course.title %> · <%= @course_section.title %></p>
+  </div>
+  <%= link_to "Edit", edit_admin_course_section_lesson_path(@course_section, @lesson), class: "text-blue-600" %>
+</div>
+
+<div class="flex justify-between items-center mb-2">
+  <h2 class="text-lg font-semibold">Lesson Sections</h2>
+  <%= link_to "New Lesson Section", new_admin_lesson_lesson_section_path(@lesson), class: "text-sm bg-blue-600 text-white px-3 py-1.5 rounded" %>
+</div>
+
+<div class="bg-white rounded shadow-sm divide-y">
+  <% @lesson.lesson_sections.order(:position).each do |ls| %>
+    <div class="px-4 py-3 flex justify-between items-center">
+      <div>
+        <span class="text-gray-400 text-sm mr-2">#<%= ls.position %></span>
+        <%= link_to ls.title, admin_lesson_lesson_section_path(@lesson, ls), class: "text-gray-700 hover:text-blue-600" %>
+        <span class="text-gray-400 text-sm ml-2">(<%= ls.section_type %>)</span>
+      </div>
+      <div class="space-x-2">
+        <%= link_to "Edit", edit_admin_lesson_lesson_section_path(@lesson, ls), class: "text-blue-600 text-sm" %>
+        <%= button_to "Delete", admin_lesson_lesson_section_path(@lesson, ls), method: :delete,
+              data: { turbo_confirm: "Delete this section and its exercises?" },
+              class: "text-red-600 text-sm inline" %>
+      </div>
+    </div>
+  <% end %>
+  <% if @lesson.lesson_sections.empty? %>
+    <div class="px-4 py-3 text-gray-400 text-sm">No lesson sections yet.</div>
+  <% end %>
+</div>

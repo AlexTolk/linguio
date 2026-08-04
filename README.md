@@ -40,7 +40,7 @@ The first version focuses on helping learners prepare for French proficiency exa
 
 ### Backend
 
-* Ruby on Rails
+* Ruby on Rails 8.1
 * PostgreSQL
 * Ruby 3.3+
 
@@ -127,34 +127,41 @@ rspec
 
 ## 🗺 Roadmap
 
-### Phase 1 — Foundation
+### Phase 1 — Lesson Player + Content Authoring (in progress)
+* [x] Rails 8.1 + Devise auth (student/admin roles)
+* [x] Core schema: Course → CourseSection → Lesson → LessonSection → Exercise
+* [x] Vocabulary as a global, language-scoped pool
+* [x] Flashcard exercise: full player loop (reveal → self-assess → submit → result → advance)
+* [ ] Admin CRUD: Course → CourseSection → Lesson → LessonSection (foundational — unblocks manual content creation)
+* [ ] Flashcard: admin authoring form (type-specific fields — front word, back translation, audio, example — not a generic JSON editor)
+* [ ] Matching: lock JSON shape → player → admin form — up next
+* [ ] Fill-in-the-blank: lock JSON shape → player → admin form
+* [ ] Dialogue: lock JSON shape → player → admin form
+* [ ] Admin CRUD: VocabularyItem (global pool)
+* [ ] Slugs on courses/course_sections/lessons
+* [ ] Lesson flow polish: section transitions, completion screen, minimal progress indicator ("3/8 exercises," "2/4 sections" — no XP, streaks, mastery %, or skill trees; that's Phase 3 territory)
 
-* [x] Rails application setup
-* [x] Database design
-* [ ] User authentication
-* [ ] Course structure
-* [ ] Basic lesson interface
+### Phase 2 — Listening & Speaking
+* [ ] media_assets (polymorphic) for audio content
+* [ ] Listening: audio assets + comprehension questions (player + admin form, same locked-shape-first pattern)
+* [ ] Speaking: recording, playback, transcription, feedback — the largest technical unknown in the roadmap (pronunciation scoring, phoneme accuracy, accent tolerance, and latency are genuinely hard problems, not just "audio + speech API")
 
-### Phase 2 — Learning System
+### Phase 3 — Review & Analytics
+* [ ] `context` field on ExerciseAttempt (lesson/review)
+* [ ] Weak content review — derived from recent attempt history, no mastery table
+* [ ] Endless review fallback — cycles known vocab across existing exercise types
+* [ ] Per-question analytics (exercise_attempt_answers)
+* [ ] Progress tracking (derived from ExerciseAttempt, not stored separately) — ExerciseAttempt stays the immutable event log; everything else is a projection over it
+* [ ] *(deferred within this phase)* SM-2 scheduling (`ease_factor`, `interval_days`) — only after weak/endless review is observable in practice; classic SM-2 may not be the right fit for an exercise-based model
 
-* [ ] Vocabulary database
-* [ ] Grammar lessons
-* [ ] Interactive exercises
-* [ ] Progress tracking
+### Phase 4 — Exam Preparation
+* [ ] Tagging schema on Exercise (e.g. `["a1", "greetings", "tef_speaking"]`) for exam-structure alignment
+* [ ] TEF/TCF exam-structure tagging
+* [ ] Shared free-text exercise infrastructure (e.g. "use it in a sentence," writing tasks) — divergent scoring strategies per use case: lightweight/AI-assisted validation for review sentences vs. rubric-based criteria (length, coherence, register) for TEF/TCF writing
 
-### Phase 3 — Exam Preparation
-
-* [ ] TEF/TCF vocabulary modules
-* [ ] Listening practice
-* [ ] Writing tasks
-* [ ] Speaking simulations
-
-### Phase 4 — Expansion
-
-* [ ] Additional languages
+### Phase 5 — Expansion
+* [ ] Multi-language support (Russian next; schema already language-agnostic)
 * [ ] Mobile application
-* [ ] AI-powered learning assistants
-* [ ] Personalized learning paths
 
 ## 🎯 Vision
 

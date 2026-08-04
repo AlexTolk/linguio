@@ -1,0 +1,10 @@
+<div class="flex justify-between items-start mb-6">
+  <div>
+    <h1 class="text-2xl font-bold"><%= @lesson_section.title %></h1>
+    <p class="text-gray-500"><%= @lesson.title %> · <%= @lesson_section.section_type %></p>
+  </div>
+  <%= link_to "Edit", edit_admin_lesson_lesson_section_path(@lesson, @lesson_section), class: "text-blue-600" %>
+</div>
+
+<h2 class="text-lg font-semibold mb-2">Exercises</h2>
+<p class="text-gray-500 text-sm">Exercise CRUD is a separate slice — exercises are content-heavy (JSONB) and deserve their own careful design pass.</p>

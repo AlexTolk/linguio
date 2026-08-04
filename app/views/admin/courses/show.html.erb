@@ -1,0 +1,53 @@
+<div class="flex justify-between items-start mb-6">
+  <div>
+    <h1 class="text-2xl font-bold"><%= @course.title %></h1>
+    <p class="text-gray-500"><%= @course.language %> · <%= @course.level %></p>
+  </div>
+  <%= link_to "Edit", edit_admin_course_path(@course), class: "text-blue-600" %>
+</div>
+
+<p class="mb-6"><%= @course.description %></p>
+
+<div class="flex justify-between items-center mb-2">
+  <h2 class="text-lg font-semibold">Sections</h2>
+  <%= link_to "New Section", new_admin_course_course_section_path(@course), class: "text-sm bg-blue-600 text-white px-3 py-1.5 rounded" %>
+</div>
+
+<div class="bg-white rounded shadow-sm divide-y">
+  <% @course.course_sections.order(:position).each do |section| %>
+    <div class="px-4 py-3">
+      <div class="flex justify-between items-center">
+        <div>
+          <span class="text-gray-400 text-sm mr-2">#<%= section.position %></span>
+          <%= section.title %>
+        </div>
+        <div class="space-x-2">
+          <%= link_to "+ Lesson", new_admin_course_section_lesson_path(section), class: "text-green-600 text-sm" %>
+          <%= link_to "Edit", edit_admin_course_course_section_path(@course, section), class: "text-blue-600 text-sm" %>
+          <%= button_to "Delete", admin_course_course_section_path(@course, section), method: :delete,
+                data: { turbo_confirm: "Delete this section and everything under it?" },
+                class: "text-red-600 text-sm inline" %>
+        </div>
+      </div>
+
+      <% if section.lessons.any? %>
+        <ul class="mt-2 ml-6 space-y-1">
+          <% section.lessons.order(:position).each do |lesson| %>
+            <li class="text-sm flex justify-between items-center">
+              <%= link_to lesson.title, admin_course_section_lesson_path(section, lesson), class: "text-gray-700 hover:text-blue-600" %>
+              <span class="space-x-2">
+                <%= link_to "Edit", edit_admin_course_section_lesson_path(section, lesson), class: "text-blue-600 text-xs" %>
+                <%= button_to "Delete", admin_course_section_lesson_path(section, lesson), method: :delete,
+                      data: { turbo_confirm: "Delete this lesson and everything under it?" },
+                      class: "text-red-600 text-xs inline" %>
+              </span>
+            </li>
+          <% end %>
+        </ul>
+      <% end %>
+    </div>
+  <% end %>
+  <% if @course.course_sections.empty? %>
+    <div class="px-4 py-3 text-gray-400 text-sm">No sections yet.</div>
+  <% end %>
+</div>
