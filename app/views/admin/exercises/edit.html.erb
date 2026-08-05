@@ -1,0 +1,2 @@
+<h1 class="text-2xl font-bold mb-6">Edit <%= @exercise.exercise_type.humanize %> Exercise — <%= @lesson_section.title %></h1>
+<%= render "#{@exercise.exercise_type}_form", lesson_section: @lesson_section, exercise: @exercise %>
