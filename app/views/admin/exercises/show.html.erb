@@ -1,0 +1,33 @@
+<div class="flex justify-between items-start mb-6">
+  <div>
+    <h1 class="text-2xl font-bold">Exercise #<%= @exercise.position %> — <%= @exercise.exercise_type %></h1>
+    <p class="text-gray-500"><%= @lesson_section.lesson.title %> · <%= @lesson_section.title %></p>
+  </div>
+  <%= link_to "Edit", edit_admin_lesson_section_exercise_path(@lesson_section, @exercise), class: "text-blue-600" %>
+</div>
+
+<% if @exercise.exercise_type == "dialogue" %>
+  <div class="space-y-3">
+    <% (@exercise.content["lines"] || []).each_with_index do |line, i| %>
+      <div class="bg-white rounded shadow-sm p-4">
+        <p class="text-xs text-gray-400 mb-1">Line <%= i + 1 %> — <%= line["speaker"] %></p>
+        <p class="mb-3"><%= line["text"] %></p>
+
+        <div class="space-y-1">
+          <% (line["options"] || []).each do |option| %>
+            <div class="flex items-center gap-2 text-sm <%= option["correct"] ? 'text-green-700 font-medium' : 'text-gray-500' %>">
+              <span><%= option["correct"] ? "✓" : "✗" %></span>
+              <span><%= option["text"] %></span>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+    <% if (@exercise.content["lines"] || []).empty? %>
+      <p class="text-gray-400 text-sm">No lines yet.</p>
+    <% end %>
+  </div>
+<% else %>
+  <pre class="bg-white rounded shadow-sm p-4 text-sm overflow-x-auto"><%= JSON.pretty_generate(@exercise.content) %></pre>
+<% end %>

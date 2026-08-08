@@ -1,0 +1,17 @@
+=> 
+[[[34m[1m15[0m,
+  [34m[1m4[0m,
+  {[31m[1m"[0m[31mlines[0m[31m[1m"[0m=>
+    [{[31m[1m"[0m[31mtext[0m[31m[1m"[0m=>[31m[1m"[0m[31mBonjour[0m[31m[1m"[0m, [31m[1m"[0m[31moptions[0m[31m[1m"[0m=>[{[31m[1m"[0m[31mtext[0m[31m[1m"[0m=>[31m[1m"[0m[31m[1m"[0m, [31m[1m"[0m[31mcorrect[0m[31m[1m"[0m=>[36m[1mfalse[0m}, {[31m[1m"[0m[31mtext[0m[31m[1m"[0m=>[31m[1m"[0m[31m[1m"[0m, [31m[1m"[0m[31mcorrect[0m[31m[1m"[0m=>[36m[1mfalse[0m}], [31m[1m"[0m[31mspeaker[0m[31m[1m"[0m=>[31m[1m"[0m[31mMarie[0m[31m[1m"[0m},
+     {[31m[1m"[0m[31mtext[0m[31m[1m"[0m=>[31m[1m"[0m[31m[1m"[0m, [31m[1m"[0m[31moptions[0m[31m[1m"[0m=>[{[31m[1m"[0m[31mtext[0m[31m[1m"[0m=>[31m[1m"[0m[31mJe m'appelle Paul.[0m[31m[1m"[0m, [31m[1m"[0m[31mcorrect[0m[31m[1m"[0m=>[36m[1mfalse[0m}, {[31m[1m"[0m[31mtext[0m[31m[1m"[0m=>[31m[1m"[0m[31mBonjour. Ca va?[0m[31m[1m"[0m, [31m[1m"[0m[31mcorrect[0m[31m[1m"[0m=>[36m[1mtrue[0m}], [31m[1m"[0m[31mspeaker[0m[31m[1m"[0m=>[31m[1m"[0m[31mPaul[0m[31m[1m"[0m}]}],
+ [[34m[1m14[0m,
+  [34m[1m3[0m,
+  {[31m[1m"[0m[31mlines[0m[31m[1m"[0m=>
+    [{[31m[1m"[0m[31mtext[0m[31m[1m"[0m=>[31m[1m"[0m[31mBonjour[0m[31m[1m"[0m, [31m[1m"[0m[31mtype[0m[31m[1m"[0m=>[31m[1m"[0m[31mshown[0m[31m[1m"[0m, [31m[1m"[0m[31mspeaker[0m[31m[1m"[0m=>[31m[1m"[0m[31mMarie[0m[31m[1m"[0m, [31m[1m"[0m[31mtranslation[0m[31m[1m"[0m=>[31m[1m"[0m[31mHello[0m[31m[1m"[0m}, {[31m[1m"[0m[31mtext[0m[31m[1m"[0m=>[31m[1m"[0m[31mComment ca va ?[0m[31m[1m"[0m, [31m[1m"[0m[31mtype[0m[31m[1m"[0m=>[31m[1m"[0m[31mshown[0m[31m[1m"[0m, [31m[1m"[0m[31mspeaker[0m[31m[1m"[0m=>[31m[1m"[0m[31mMarie[0m[31m[1m"[0m, [31m[1m"[0m[31mtranslation[0m[31m[1m"[0m=>[31m[1m"[0m[31mHow are you?[0m[31m[1m"[0m}]}],
+ [[34m[1m11[0m,
+  [34m[1m1[0m,
+  {[31m[1m"[0m[31mlines[0m[31m[1m"[0m=>
+    [{[31m[1m"[0m[31mtext[0m[31m[1m"[0m=>[31m[1m"[0m[31mBonjour ![0m[31m[1m"[0m, [31m[1m"[0m[31mspeaker[0m[31m[1m"[0m=>[31m[1m"[0m[31mMarie[0m[31m[1m"[0m, [31m[1m"[0m[31mtranslation[0m[31m[1m"[0m=>[31m[1m"[0m[31mHello![0m[31m[1m"[0m},
+     {[31m[1m"[0m[31mtext[0m[31m[1m"[0m=>[31m[1m"[0m[31mBonjour ! Comment ça va ?[0m[31m[1m"[0m, [31m[1m"[0m[31mspeaker[0m[31m[1m"[0m=>[31m[1m"[0m[31mPaul[0m[31m[1m"[0m, [31m[1m"[0m[31mtranslation[0m[31m[1m"[0m=>[31m[1m"[0m[31mHello! How are you?[0m[31m[1m"[0m},
+     {[31m[1m"[0m[31mtext[0m[31m[1m"[0m=>[31m[1m"[0m[31mÇa va bien, merci. Et toi ?[0m[31m[1m"[0m, [31m[1m"[0m[31mspeaker[0m[31m[1m"[0m=>[31m[1m"[0m[31mMarie[0m[31m[1m"[0m, [31m[1m"[0m[31mtranslation[0m[31m[1m"[0m=>[31m[1m"[0m[31mI'm doing well, thanks. And you?[0m[31m[1m"[0m},
+     {[31m[1m"[0m[31mtext[0m[31m[1m"[0m=>[31m[1m"[0m[31mÇa va, merci ![0m[31m[1m"[0m, [31m[1m"[0m[31mspeaker[0m[31m[1m"[0m=>[31m[1m"[0m[31mPaul[0m[31m[1m"[0m, [31m[1m"[0m[31mtranslation[0m[31m[1m"[0m=>[31m[1m"[0m[31mI'm good, thanks![0m[31m[1m"[0m}]}]]

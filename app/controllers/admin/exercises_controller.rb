@@ -6,7 +6,7 @@ module Admin
     EXERCISE_TYPES = %w[flashcard matching fill_blank dialogue].freeze
     MATCHING_ROWS = 10
     FILL_BLANK_ROWS = 8
-    DIALOGUE_ROWS = 12
+    DIALOGUE_ROWS = 4
 
     def show
     end
@@ -91,54 +91,27 @@ module Admin
       true
     end
 
-    def assign_fill_blank_content(exercise)
-      raw = params.dig(:exercise, :content, :questions)&.to_unsafe_h || {}
-
-      questions = raw.values.filter_map do |row|
-        sentence = row["sentence"].to_s.strip
-        answer = row["answer"].to_s.strip
-        hint = row["hint"].to_s.strip
-        alternatives = row["alternatives"].to_s.split(",").map(&:strip).reject(&:blank?)
-        alternatives = [ answer ] if alternatives.empty? && answer.present?
-
-        next if sentence.blank? && answer.blank?
-
-        { "sentence" => sentence, "answer" => answer, "alternatives" => alternatives, "hint" => hint }
-      end
-
-      exercise.content = { "questions" => questions }
-      true
-    end
-
     def assign_dialogue_content(exercise)
       raw = params.dig(:exercise, :content, :lines)&.to_unsafe_h || {}
 
       lines = raw.values.filter_map do |row|
-        type = row["type"].presence || "shown"
         speaker = row["speaker"].to_s.strip
+        text = row["text"].to_s.strip
+        option_a_text = row["option_a_text"].to_s.strip
+        option_b_text = row["option_b_text"].to_s.strip
 
-        case type
-        when "choice"
-          option_a_text = row["option_a_text"].to_s.strip
-          option_b_text = row["option_b_text"].to_s.strip
-          next if speaker.blank? && option_a_text.blank? && option_b_text.blank?
+        next if speaker.blank? && text.blank? && option_a_text.blank? && option_b_text.blank?
 
-          correct = row["correct_option"]
+        correct = row["correct_option"]
 
-          {
-            "type" => "choice",
-            "speaker" => speaker,
-            "options" => [
-              { "text" => option_a_text, "translation" => row["option_a_translation"].to_s.strip, "correct" => correct == "a" },
-              { "text" => option_b_text, "translation" => row["option_b_translation"].to_s.strip, "correct" => correct == "b" }
-            ]
-          }
-        else
-          text = row["text"].to_s.strip
-          next if speaker.blank? && text.blank?
-
-          { "type" => "shown", "speaker" => speaker, "text" => text, "translation" => row["translation"].to_s.strip }
-        end
+        {
+          "speaker" => speaker,
+          "text" => text,
+          "options" => [
+            { "text" => option_a_text, "correct" => correct == "a" },
+            { "text" => option_b_text, "correct" => correct == "b" }
+          ]
+        }
       end
 
       exercise.content = { "lines" => lines }

@@ -1,11 +1,26 @@
-<div class="space-y-3">
-  <% exercise.content["lines"].each do |line| %>
-    <div>
-      <p><span class="font-semibold"><%= line["speaker"] %>:</span> <%= line["text"] %></p>
-      <p class="text-sm text-gray-400"><%= line["translation"] %></p>
-    </div>
-  <% end %>
+<div class="space-y-4">
+  <%= form_with url: submit_lesson_lesson_section_exercise_path(lesson, lesson_section, exercise) do %>
+    <div class="space-y-3">
+      <% exercise.content["lines"].each_with_index do |line, i| %>
+        <% if i.zero? %>
+          <p><span class="font-semibold"><%= line["speaker"] %>:</span> <%= line["text"] %></p>
+        <% else %>
+          <div class="flex flex-wrap items-center gap-x-4 gap-y-1">
+            <span class="font-semibold"><%= line["speaker"] %>:</span>
 
-  <%= button_to "Continue", submit_lesson_lesson_section_exercise_path(lesson, lesson_section, exercise),
-        method: :post, class: "mt-4 px-4 py-2 rounded-md bg-indigo-600 text-white font-medium hover:bg-indigo-700" %>
+            <% line["options"].each_with_index do |option, opt_index| %>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <%= radio_button_tag "choices[#{i}]", opt_index, false, class: "shrink-0" %>
+                <span><%= option["text"] %></span>
+              </label>
+            <% end %>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+
+    <button type="submit" class="mt-4 px-4 py-2 rounded-md bg-indigo-600 text-white font-medium hover:bg-indigo-700">
+      Submit
+    </button>
+  <% end %>
 </div>

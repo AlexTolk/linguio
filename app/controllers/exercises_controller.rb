@@ -46,7 +46,7 @@ class ExercisesController < ApplicationController
     when "fill_blank"
       score_fill_blank
     when "dialogue"
-      { score: 100, answers: [] }
+      score_dialogue
     else
       raise ArgumentError, "Unknown exercise_type: #{@exercise.exercise_type}"
     end
@@ -67,7 +67,7 @@ class ExercisesController < ApplicationController
     end
 
     score = if answers.any?
-    ((answers.count { |a| a[:correct] }.to_f / answers.size) * 100).round
+      ((answers.count { |a| a[:correct] }.to_f / answers.size) * 100).round
     else
       0
     end
@@ -81,7 +81,7 @@ class ExercisesController < ApplicationController
 
     answers = questions.each_with_index.map do |q, i|
       given = submitted[i.to_s].to_s.strip
-      acceptable = ([q["answer"]] + Array(q["alternatives"])).compact.map { |a| a.strip.downcase }
+      acceptable = ([ q["answer"] ] + Array(q["alternatives"])).compact.map { |a| a.strip.downcase }
       correct = acceptable.include?(given.downcase)
 
       {
@@ -97,7 +97,37 @@ class ExercisesController < ApplicationController
     else
       0
     end
-    
+
+    { score: score, answers: answers }
+  end
+
+  def score_dialogue
+    lines = @exercise.content["lines"]
+    submitted = params[:choices] || {}
+
+    # line 0 is context only — never rendered as a choice, never graded
+    gradable_lines = lines.each_with_index.to_a.drop(1)
+
+    answers = gradable_lines.map do |line, i|
+      options = line["options"]
+      given_index = submitted[i.to_s]
+      given_option = given_index.present? ? options[given_index.to_i] : nil
+      correct_option = options.find { |o| o["correct"] }
+
+      {
+        item_key: i.to_s,
+        given_answer: given_option&.fetch("text", nil),
+        correct_answer: correct_option&.fetch("text", nil),
+        correct: given_option == correct_option
+      }
+    end
+
+    score = if answers.any?
+      ((answers.count { |a| a[:correct] }.to_f / answers.size) * 100).round
+    else
+      0
+    end
+
     { score: score, answers: answers }
   end
 end
