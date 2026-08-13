@@ -103,15 +103,18 @@ module Admin
         next if speaker.blank? && text.blank? && option_a_text.blank? && option_b_text.blank?
 
         correct = row["correct_option"]
+        options_present = option_a_text.present? || option_b_text.present?
 
-        {
-          "speaker" => speaker,
-          "text" => text,
-          "options" => [
+        line = { "speaker" => speaker, "text" => text }
+
+        if options_present
+          line["options"] = [
             { "text" => option_a_text, "correct" => correct == "a" },
             { "text" => option_b_text, "correct" => correct == "b" }
           ]
-        }
+        end
+
+        line
       end
 
       exercise.content = { "lines" => lines }
