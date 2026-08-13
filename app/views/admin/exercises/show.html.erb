@@ -14,7 +14,7 @@
         <p class="mb-3"><%= line["text"] %></p>
 
         <div class="space-y-1">
-          <% (line["options"] || []).each do |option| %>
+          <% (line["options"] || []).each_with_index do |option| %>
             <div class="flex items-center gap-2 text-sm <%= option["correct"] ? 'text-green-700 font-medium' : 'text-gray-500' %>">
               <span><%= option["correct"] ? "✓" : "✗" %></span>
               <span><%= option["text"] %></span>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_31_104914) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_11_090428) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -45,6 +45,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_31_104914) do
 
   create_table "exercise_attempts", force: :cascade do |t|
     t.datetime "completed_at"
+    t.integer "context", default: 0, null: false
     t.datetime "created_at", null: false
     t.bigint "exercise_id", null: false
     t.integer "score"
@@ -52,6 +53,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_31_104914) do
     t.integer "status", default: 0, null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
+    t.index ["context"], name: "index_exercise_attempts_on_context"
     t.index ["exercise_id"], name: "index_exercise_attempts_on_exercise_id"
     t.index ["user_id", "exercise_id"], name: "index_exercise_attempts_on_user_id_and_exercise_id"
     t.index ["user_id"], name: "index_exercise_attempts_on_user_id"

@@ -39,7 +39,14 @@
   <% end %>
 
   <div class="flex gap-3">
-    <% if !good && @exercise.exercise_type != "flashcard" %>
+    <% wrong_keys = @attempt.exercise_attempt_answers.where(correct: false).pluck(:item_key) %>
+    <% reviewable = %w[matching fill_blank].include?(@exercise.exercise_type) %>
+
+    <% if !good && reviewable && wrong_keys.any? && @attempt.lesson? %>
+      <%= link_to "Review mistakes",
+            review_lesson_lesson_section_exercise_path(@lesson, @lesson_section, @exercise, item_keys: wrong_keys),
+            class: "inline-block px-4 py-2 rounded-md border border-gray-300 text-gray-700 font-medium hover:bg-gray-50" %>
+    <% elsif !good && @exercise.exercise_type == "dialogue" %>
       <%= link_to "Try Again",
             lesson_lesson_section_exercise_path(@lesson, @lesson_section, @exercise),
             class: "inline-block px-4 py-2 rounded-md border border-gray-300 text-gray-700 font-medium hover:bg-gray-50" %>

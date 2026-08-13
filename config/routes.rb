@@ -2,17 +2,19 @@ Rails.application.routes.draw do
   devise_for :users
 
   root "home#index"
-  resources :courses, only: [:index, :show]
-  
-  resources :lessons, only: [:show] do
+  resources :courses, only: [ :index, :show ]
+
+  resources :lessons, only: [ :show ] do
     member do
       get :complete
     end
 
     resources :lesson_sections, only: [] do
-      resources :exercises, only: [:show] do
+      resources :exercises, only: [ :show ] do
         post :submit, on: :member
         get :result, on: :member
+        get :review, on: :member
+        post :submit_review, on: :member
       end
     end
   end
@@ -21,19 +23,19 @@ Rails.application.routes.draw do
     root to: "dashboard#index"
 
     resources :courses do
-      resources :course_sections, except: [:index, :show]
+      resources :course_sections, except: [ :index, :show ]
     end
 
     resources :course_sections, only: [] do
-      resources :lessons, except: [:index]
+      resources :lessons, except: [ :index ]
     end
 
     resources :lessons, only: [] do
-      resources :lesson_sections, except: [:index]
+      resources :lesson_sections, except: [ :index ]
     end
 
     resources :lesson_sections, only: [] do
-      resources :exercises, except: [:index]
+      resources :exercises, except: [ :index ]
     end
   end
 

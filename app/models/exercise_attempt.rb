@@ -8,6 +8,10 @@ class ExerciseAttempt < ApplicationRecord
     in_progress: 1,
     completed: 2
   }
+  enum :context, {
+    lesson: 0,
+    review: 1
+  }
 
   validates :score,
             numericality: {

@@ -69,9 +69,9 @@ end
 grammar_section.exercises.find_or_create_by!(exercise_type: "fill_blank", position: 1) do |e|
   e.content = {
     questions: [
-      { sentence: "Je ___ français.",   answer: "parle",  alternatives: ["parle"],  hint: "verb: parler" },
-      { sentence: "Tu ___ anglais.",    answer: "parles", alternatives: ["parles"], hint: "verb: parler" },
-      { sentence: "Elle ___ espagnol.", answer: "parle",  alternatives: ["parle"],  hint: "verb: parler" }
+      { sentence: "Je ___ français.",   answer: "parle",  alternatives: [ "parle" ],  hint: "verb: parler" },
+      { sentence: "Tu ___ anglais.",    answer: "parles", alternatives: [ "parles" ], hint: "verb: parler" },
+      { sentence: "Elle ___ espagnol.", answer: "parle",  alternatives: [ "parle" ],  hint: "verb: parler" }
     ]
   }
 end
@@ -86,10 +86,24 @@ end
 conversation_section.exercises.find_or_create_by!(exercise_type: "dialogue", position: 1) do |e|
   e.content = {
     lines: [
-      { speaker: "Marie", text: "Bonjour !",                     translation: "Hello!" },
-      { speaker: "Paul",  text: "Bonjour ! Comment ça va ?",      translation: "Hello! How are you?" },
-      { speaker: "Marie", text: "Ça va bien, merci. Et toi ?",    translation: "I'm doing well, thanks. And you?" },
-      { speaker: "Paul",  text: "Ça va, merci !",                 translation: "I'm good, thanks!" }
+      { speaker: "Marie", text: "Bonjour !" },
+      {
+        speaker: "Paul",
+        text: "",
+        options: [
+          { text: "Bonjour ! Comment ça va ?", correct: true },
+          { text: "Au revoir !", correct: false }
+        ]
+      },
+      { speaker: "Marie", text: "Ça va bien, merci. Et toi ?" },
+      {
+        speaker: "Paul",
+        text: "",
+        options: [
+          { text: "Ça va, merci !", correct: true },
+          { text: "Je m'appelle Paul.", correct: false }
+        ]
+      }
     ]
   }
 end

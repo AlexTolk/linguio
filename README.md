@@ -132,11 +132,11 @@ rspec
 * [x] Core schema: Course → CourseSection → Lesson → LessonSection → Exercise
 * [x] Vocabulary as a global, language-scoped pool
 * [x] Flashcard exercise: full player loop (reveal → self-assess → submit → result → advance)
-* [ ] Admin CRUD: Course → CourseSection → Lesson → LessonSection (foundational — unblocks manual content creation)
-* [ ] Flashcard: admin authoring form (type-specific fields — front word, back translation, audio, example — not a generic JSON editor)
-* [ ] Matching: lock JSON shape → player → admin form — up next
-* [ ] Fill-in-the-blank: lock JSON shape → player → admin form
-* [ ] Dialogue: lock JSON shape → player → admin form
+* [x] Admin CRUD: Course → CourseSection → Lesson → LessonSection (foundational — unblocks manual content creation)
+* [x] Flashcard: admin authoring form (type-specific fields — front word, back translation, audio, example — not a generic JSON editor)
+* [x] Matching: lock JSON shape → player → admin form — up next
+* [x] Fill-in-the-blank: lock JSON shape → player → admin form
+* [x] Dialogue: lock JSON shape → player → admin form
 * [ ] Admin CRUD: VocabularyItem (global pool)
 * [ ] Slugs on courses/course_sections/lessons
 * [ ] Lesson flow polish: section transitions, completion screen, minimal progress indicator ("3/8 exercises," "2/4 sections" — no XP, streaks, mastery %, or skill trees; that's Phase 3 territory)
