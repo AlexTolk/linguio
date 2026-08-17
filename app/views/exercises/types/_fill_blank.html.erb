@@ -1,6 +1,11 @@
 <div class="space-y-6">
-  <%= form_with url: submit_lesson_lesson_section_exercise_path(lesson, lesson_section, exercise) do %>
-    <% exercise.content["questions"].each_with_index do |q, i| %>
+  <% questions = exercise.content["questions"].each_with_index.to_a %>
+  <% questions = questions.select { |_q, i| item_keys.include?(i.to_s) } if local_assigns[:review_mode] %>
+
+  <%= form_with url: (local_assigns[:review_mode] ?
+        submit_review_lesson_lesson_section_exercise_path(lesson, lesson_section, exercise) :
+        submit_lesson_lesson_section_exercise_path(lesson, lesson_section, exercise)) do %>
+    <% questions.each do |q, i| %>
       <div class="mb-4">
         <p class="font-medium mb-1"><%= q["sentence"] %></p>
         <% if q["hint"].present? %>
@@ -11,7 +16,7 @@
     <% end %>
 
     <button type="submit" class="px-4 py-2 rounded-md bg-indigo-600 text-white font-medium hover:bg-indigo-700">
-      Submit
+      <%= local_assigns[:review_mode] ? "Submit review" : "Submit" %>
     </button>
   <% end %>
 </div>

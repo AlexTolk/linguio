@@ -1,19 +1,9 @@
-<%= @item_keys.inspect %>
-<div class="space-y-4">
-  <% pairs = @exercise.content["pairs"].select { |p| @item_keys.include?(p["left"]) } %>
-  <% right_options = pairs.map { |p| p["right"] }.shuffle %>
+<div class="max-w-2xl mx-auto py-8 px-4">
+  <h1 class="text-3xl font-bold mb-2"><%= @lesson.title %></h1>
+  <h2 class="text-xl font-semibold mb-6 text-gray-600"><%= @lesson_section.title %></h2>
+  <p class="text-sm text-gray-500 mb-4">Reviewing your mistakes</p>
 
-  <%= form_with url: submit_review_lesson_lesson_section_exercise_path(@lesson, @lesson_section, @exercise) do %>
-    <% pairs.each do |pair| %>
-      <div class="flex items-center gap-4">
-        <span class="font-medium w-32"><%= pair["left"] %></span>
-        <%= select_tag "matches[#{pair['left']}]",
-              options_for_select([["Choose...", ""]] + right_options.map { |r| [r, r] }),
-              class: "border rounded-md px-3 py-1" %>
-      </div>
-    <% end %>
-    <button type="submit" class="mt-4 px-4 py-2 rounded-md bg-indigo-600 text-white font-medium hover:bg-indigo-700">
-      Submit review
-    </button>
-  <% end %>
+  <%= render partial: @exercise.partial_path,
+        locals: { exercise: @exercise, lesson: @lesson, lesson_section: @lesson_section,
+                   review_mode: true, item_keys: @item_keys } %>
 </div>

@@ -29,15 +29,15 @@ class ExercisesController < ApplicationController
     @attempt = @exercise.exercise_attempts.for_user(current_user).find(params[:attempt_id])
   end
   def review
-    @attempt = @exercise.exercise_attempts.for_user(current_user).lesson.order(completed_at: :desc).first
+    @attempt = @exercise.exercise_attempts.for_user(current_user).order(completed_at: :desc).first
     @item_keys = @attempt&.exercise_attempt_answers&.where(correct: false)&.pluck(:item_key) || []
 
     redirect_to lesson_lesson_section_exercise_path(@lesson, @lesson_section, @exercise) and return if @item_keys.empty?
   end
 
   def submit_review
-    last_lesson_attempt = @exercise.exercise_attempts.for_user(current_user).lesson.order(completed_at: :desc).first
-    item_keys = last_lesson_attempt&.exercise_attempt_answers&.where(correct: false)&.pluck(:item_key) || []
+    last_attempt = @exercise.exercise_attempts.for_user(current_user).order(completed_at: :desc).first
+    item_keys = last_attempt&.exercise_attempt_answers&.where(correct: false)&.pluck(:item_key) || []
     result = compute_score(item_keys: item_keys)
     attempt = nil
 
@@ -101,11 +101,11 @@ class ExercisesController < ApplicationController
   end
 
   def score_fill_blank(item_keys: nil)
-    questions = @exercise.content["questions"]
-    questions = questions.each_with_index.select { |_q, i| item_keys.include?(i.to_s) }.map(&:first) if item_keys.present?
+    questions = @exercise.content["questions"].each_with_index.to_a
+    questions = questions.select { |_q, i| item_keys.include?(i.to_s) } if item_keys.present?
     submitted = params[:answers] || {}
 
-    answers = questions.each_with_index.map do |q, i|
+    answers = questions.map do |q, i|
       given = submitted[i.to_s].to_s.strip
       acceptable = ([ q["answer"] ] + Array(q["alternatives"])).compact.map { |a| a.strip.downcase }
       correct = acceptable.include?(given.downcase)
@@ -118,12 +118,7 @@ class ExercisesController < ApplicationController
       }
     end
 
-    score = if answers.any?
-      ((answers.count { |a| a[:correct] }.to_f / answers.size) * 100).round
-    else
-      0
-    end
-
+    score = answers.any? ? ((answers.count { |a| a[:correct] }.to_f / answers.size) * 100).round : 0
     { score: score, answers: answers }
   end
 

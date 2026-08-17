@@ -1,9 +1,13 @@
 <div class="space-y-4">
-  <% right_options = exercise.content["pairs"].map { |p| p["right"] }.shuffle %>
+  <% pairs = exercise.content["pairs"] %>
+  <% pairs = pairs.select { |p| item_keys.include?(p["left"]) } if local_assigns[:review_mode] %>
+  <% right_options = pairs.map { |p| p["right"] }.shuffle %>
 
-  <%= form_with url: submit_lesson_lesson_section_exercise_path(lesson, lesson_section, exercise) do %>
+  <%= form_with url: (local_assigns[:review_mode] ?
+        submit_review_lesson_lesson_section_exercise_path(lesson, lesson_section, exercise) :
+        submit_lesson_lesson_section_exercise_path(lesson, lesson_section, exercise)) do %>
     <div class="space-y-3">
-      <% exercise.content["pairs"].each do |pair| %>
+      <% pairs.each do |pair| %>
         <div class="flex items-center gap-4">
           <span class="font-medium w-32"><%= pair["left"] %></span>
           <%= select_tag "matches[#{pair['left']}]",
@@ -14,7 +18,7 @@
     </div>
 
     <button type="submit" class="mt-4 px-4 py-2 rounded-md bg-indigo-600 text-white font-medium hover:bg-indigo-700">
-      Submit
+      <%= local_assigns[:review_mode] ? "Submit review" : "Submit" %>
     </button>
   <% end %>
 </div>
