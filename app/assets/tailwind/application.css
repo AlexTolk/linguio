@@ -1,1 +1,45 @@
 @import "tailwindcss";
+
+@theme {
+  /* ── Fonts ─────────────────────────────────────────────── */
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "DM Serif Display", Georgia, serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  /* ── Primary (deep muted French blue) ─────────────────── */
+  --color-primary-50: #F0F4FB;
+  --color-primary-100: #E2ECFA;
+  --color-primary-700: #2B5DA8;
+  --color-primary-900: #1B3A6B;
+
+  /* ── Accent (soft restrained red) ─────────────────────── */
+  --color-accent-100: #F5E5E5;
+  --color-accent-700: #9E2A2B;
+  --color-accent-900: #7A1E1F;
+
+  /* ── Success (correct / passed states) ────────────────── */
+  --color-success-100: #E8F4ED;
+  --color-success-700: #1A7A4A;
+
+  /* ── Neutrals ──────────────────────────────────────────── */
+  --color-surface: #F5F6F9;
+  --color-border: #DFE3EC;
+  --color-border-strong: #B0B9CA;
+  --color-ink: #1A1F2E;
+  --color-ink-secondary: #4A5568;
+  --color-ink-muted: #8A94A8;
+
+  /* ── Level badges (A1–C2) ──────────────────────────────── */
+  --color-level-a1-bg: #E8F4ED;
+  --color-level-a1: #1A7A4A;
+  --color-level-a2-bg: #E0F5F5;
+  --color-level-a2: #0E6674;
+  --color-level-b1-bg: #E2ECFA;
+  --color-level-b1: #1B3A6B;
+  --color-level-b2-bg: #EEF2FF;
+  --color-level-b2: #3730A3;
+  --color-level-c1-bg: #F5F0FF;
+  --color-level-c1: #6B21A8;
+  --color-level-c2-bg: #FFFBEB;
+  --color-level-c2: #92400E;
+}
