@@ -127,19 +127,27 @@ rspec
 
 ## 🗺 Roadmap
 
-### Phase 1 — Lesson Player + Content Authoring (in progress)
+### Phase 1 — Lesson Player + Content Authoring (nearly complete)
 * [x] Rails 8.1 + Devise auth (student/admin roles)
 * [x] Core schema: Course → CourseSection → Lesson → LessonSection → Exercise
 * [x] Vocabulary as a global, language-scoped pool
 * [x] Flashcard exercise: full player loop (reveal → self-assess → submit → result → advance)
-* [x] Admin CRUD: Course → CourseSection → Lesson → LessonSection (foundational — unblocks manual content creation)
-* [x] Flashcard: admin authoring form (type-specific fields — front word, back translation, audio, example — not a generic JSON editor)
-* [x] Matching: lock JSON shape → player → admin form — up next
-* [x] Fill-in-the-blank: lock JSON shape → player → admin form
-* [x] Dialogue: lock JSON shape → player → admin form
+* [x] Admin CRUD: Course → CourseSection → Lesson → LessonSection
+* [x] Flashcard: admin authoring form (type-specific fields, not a generic JSON editor)
+* [x] Matching: JSON shape locked → player → admin form
+* [x] Fill-in-the-blank: JSON shape locked → player → admin form
+* [x] Dialogue: JSON shape locked → player → admin form (original version)
+* [x] Exercise player generalized across all types: `ExercisesController` dispatches via `Exercise#partial_path`, per-item feedback, dedicated result screen (separate from advancement), partial-credit scoring for matching/fill_blank
+* [x] Lesson completion flow: `lessons#complete` screen — overall score, per-section breakdown, Retry Lesson, Back to Course
+* [x] Dialogue: JSON shape redesigned to interactive chat format (`shown` lines for context, `choice` lines where the user picks the correct reply from two options; choice options carry `{ text:, correct: }` with no inline English translations)
+* [ ] Dialogue: player view + admin form reworked to match the interactive-chat redesign — up next
+* [ ] Hide shown-line translations in the dialogue player (deferred from the interactive-chat redesign)
+* [ ] Dynamic admin form UI — Stimulus-based add/remove rows, replacing fixed row caps. **Trigger: build the shared Stimulus controller once a 2nd exercise form needs add/remove rows** (matching pairs and dialogue lines both qualify) — generalize from two real cases, not upfront, per the project's no-premature-abstraction rule
+* [ ] Exercise-to-VocabularyItem linking UI in admin
+* [ ] Position reordering UI in admin
 * [ ] Admin CRUD: VocabularyItem (global pool)
 * [ ] Slugs on courses/course_sections/lessons
-* [ ] Lesson flow polish: section transitions, completion screen, minimal progress indicator ("3/8 exercises," "2/4 sections" — no XP, streaks, mastery %, or skill trees; that's Phase 3 territory)
+* [ ] Lesson flow polish: section transitions, minimal progress indicator ("3/8 exercises," "2/4 sections" — no XP, streaks, mastery %, or skill trees; that's Phase 3 territory)
 
 ### Phase 2 — Listening & Speaking
 * [ ] media_assets (polymorphic) for audio content
@@ -147,6 +155,7 @@ rspec
 * [ ] Speaking: recording, playback, transcription, feedback — the largest technical unknown in the roadmap (pronunciation scoring, phoneme accuracy, accent tolerance, and latency are genuinely hard problems, not just "audio + speech API")
 
 ### Phase 3 — Review & Analytics
+* [x] Weak/endless review feature design locked (see `SCHEMA_NOTES`) — weakness derived from last 3 `ExerciseAttempt` records, shuffle-then-cap queue (cap 15), ephemeral session-stored queue snapshots, `context` enum (`lesson`/`review`)
 * [ ] `context` field on ExerciseAttempt (lesson/review)
 * [ ] Weak content review — derived from recent attempt history, no mastery table
 * [ ] Endless review fallback — cycles known vocab across existing exercise types
