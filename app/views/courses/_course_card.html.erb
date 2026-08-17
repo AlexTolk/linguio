@@ -1,0 +1,28 @@
+<%# Locals: course: [Course], user: [User] %>
+<%
+  completed_count, total_count, pct = course_progress(course, user)
+%>
+<div class="bg-white rounded-xl border border-border p-6 flex flex-col">
+
+  <div class="flex items-start justify-between gap-3">
+    <h2 class="font-display text-2xl text-ink"><%= course.title %></h2>
+    <%= render "shared/level_badge", level: course.level %>
+  </div>
+
+  <p class="mt-3 text-ink-secondary text-sm leading-relaxed flex-1"><%= course.description %></p>
+
+  <% if total_count.positive? %>
+    <div class="mt-5">
+      <div class="flex justify-between text-ink-muted mb-1" style="font-size: 12px;">
+        <span><%= pct %>%</span>
+        <span><%= completed_count %> / <%= total_count %> lessons</span>
+      </div>
+      <div class="rounded-full overflow-hidden bg-surface border border-border mb-4" style="height: 7px;">
+        <div class="h-full bg-primary-900 rounded-full" style="width: <%= pct %>%;"></div>
+      </div>
+    </div>
+  <% end %>
+
+  <%= render "shared/button", text: "View course", url: course_path(course), variant: :primary %>
+
+</div>

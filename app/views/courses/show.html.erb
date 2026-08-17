@@ -1,45 +1,21 @@
 <div class="max-w-4xl mx-auto px-6 py-12">
 
-  <h1 class="text-5xl font-bold">
-    <%= @course.title %>
-  </h1>
+  <div class="flex items-start justify-between gap-4">
+    <div>
+      <h1 class="font-display text-4xl text-ink"><%= @course.title %></h1>
+      <p class="mt-4 text-lg text-ink-secondary leading-relaxed"><%= @course.description %></p>
+    </div>
+    <%= render "shared/level_badge", level: @course.level, size: :lg %>
+  </div>
 
-  <p class="mt-6 text-xl text-gray-600">
-    <%= @course.description %>
-  </p>
+  <%
+    default_section = default_open_section(@course, current_user)
+  %>
 
-
-  <div class="mt-10 space-y-6">
-
-    <% @course.course_sections.each do |section| %>
-
-      <div class="bg-white rounded-xl shadow p-6">
-
-        <h2 class="text-2xl font-semibold">
-          <%= section.title %>
-        </h2>
-
-
-        <div class="mt-4 space-y-3">
-
-          <% section.lessons.each do |lesson| %>
-
-            <div class="border rounded-lg p-4">
-
-              <%= link_to lesson.title,
-                lesson_path(lesson),
-              class: "text-indigo-600 font-medium" %>
-
-            </div>
-
-          <% end %>
-
-        </div>
-
-      </div>
-
+  <div class="mt-10 space-y-4">
+    <% @course.course_sections.order(:position).each_with_index do |section, i| %>
+      <%= render "courses/section_breakdown", section: section, course: @course, user: current_user, index: i + 1, open: (section == default_section) %>
     <% end %>
-
   </div>
 
 </div>
