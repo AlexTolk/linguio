@@ -1,0 +1,28 @@
+<%#
+  Renders a level pill (A1–C2).
+
+  Locals:
+    level: [String] one of "A1", "A2", "B1", "B2", "C1", "C2" (required)
+    size:  [Symbol] :sm, :md, :lg (optional, default :md)
+%>
+<%
+  size ||= :md
+  size_classes = {
+    sm: "text-[10px] px-[7px] py-[2px]",
+    md: "text-[11px] px-[9px] py-[3px]",
+    lg: "text-[13px] px-3 py-1"
+  }.fetch(size)
+
+  color_classes = case level.to_s.upcase
+  when "A1" then "bg-level-a1-bg text-level-a1"
+  when "A2" then "bg-level-a2-bg text-level-a2"
+  when "B1" then "bg-level-b1-bg text-level-b1"
+  when "B2" then "bg-level-b2-bg text-level-b2"
+  when "C1" then "bg-level-c1-bg text-level-c1"
+  when "C2" then "bg-level-c2-bg text-level-c2"
+  else "bg-surface text-ink-muted"
+  end
+%>
+<span class="inline-block font-semibold rounded-full tracking-wide <%= color_classes %> <%= size_classes %>">
+  <%= level %>
+</span>

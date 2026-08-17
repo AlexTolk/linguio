@@ -1,0 +1,47 @@
+<%#
+  Renders a styled button or button-like link.
+
+  Locals:
+    text:         [String] button label (required)
+    variant:      [Symbol] :primary, :secondary, :ghost, :danger (optional, default :primary)
+    size:         [Symbol] :sm, :md, :lg (optional, default :md)
+    url:          [String] if present, renders as a link_to; otherwise a <button> (optional)
+    turbo_method: [Symbol] turbo method, e.g. :delete (optional, only used with url:)
+    disabled:     [Boolean] (optional, default false)
+    html_options: [Hash] extra attributes merged in, e.g. { type: "submit" } (optional)
+%>
+<%
+  variant ||= :primary
+  size ||= :md
+  disabled ||= false
+  html_options ||= {}
+  turbo_method = local_assigns[:turbo_method]
+
+  variant_classes = {
+    primary:   "bg-primary-900 text-white border border-primary-900 hover:bg-primary-700",
+    secondary: "bg-white text-ink border border-border hover:bg-surface",
+    ghost:     "bg-transparent text-ink-secondary border border-transparent hover:bg-surface",
+    danger:    "bg-white text-accent-700 border border-accent-100 hover:bg-accent-100"
+  }.fetch(variant)
+
+  disabled_classes = "bg-border text-ink-muted border border-border cursor-not-allowed hover:bg-border"
+
+  size_classes = {
+    sm: "text-xs px-[14px] py-[6px]",
+    md: "text-sm px-[18px] py-[9px]",
+    lg: "text-[15px] px-6 py-[13px]"
+  }.fetch(size)
+
+  classes = [
+    "inline-block rounded-xl font-semibold transition-colors text-center whitespace-nowrap",
+    size_classes,
+    disabled ? disabled_classes : variant_classes
+  ].join(" ")
+%>
+<% if url.present? %>
+  <%= link_to text, url, class: classes, data: (turbo_method.present? ? { turbo_method: turbo_method } : {}), **html_options %>
+<% else %>
+  <button class="<%= classes %>" <%= "disabled" if disabled %> <%= tag.attributes(html_options) %>>
+    <%= text %>
+  </button>
+<% end %>
