@@ -1,6 +1,4 @@
 class User < ApplicationRecord
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
   enum :role, { student: 0, admin: 1 }
@@ -8,4 +6,16 @@ class User < ApplicationRecord
 
   has_many :exercise_attempts, dependent: :destroy
   has_many :vocabulary_reviews, dependent: :destroy
+
+  def display_name
+    name.presence || email.split("@").first
+  end
+
+  def initials
+    if name.present?
+      name.split.map(&:first).first(2).join.upcase
+    else
+      email.first.upcase
+    end
+  end
 end
