@@ -1,0 +1,16 @@
+<%# Locals: user: [User], size: [Symbol] :sm, :md (optional, default :md) %>
+<%
+  size ||= :md
+  dimension = size == :sm ? 36 : 42
+  font_size = size == :sm ? 11 : 13
+%>
+<% if user.avatar_url.present? %>
+  <img src="<%= user.avatar_url %>" alt="<%= user.display_name %>"
+       class="rounded-full object-cover"
+       style="width: <%= dimension %>px; height: <%= dimension %>px;">
+<% else %>
+  <div class="flex items-center justify-center rounded-full bg-primary-100 text-primary-900 font-semibold"
+       style="width: <%= dimension %>px; height: <%= dimension %>px; font-size: <%= font_size %>px;">
+    <%= user.initials %>
+  </div>
+<% end %>
