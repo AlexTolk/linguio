@@ -1,20 +1,72 @@
-<div class="border rounded-lg p-6 mb-8">
-  <% if revealed %>
-    <h3 class="text-2xl font-bold mb-4"><%= exercise.content.dig("front", "word") %></h3>
-    <p class="text-lg text-gray-800 mb-1"><%= exercise.content.dig("back", "translation") %></p>
-    <p class="text-sm text-gray-500 italic mb-6"><%= exercise.content.dig("back", "example") %></p>
+<%
+  cards = exercise.content["cards"]
+%>
+<div data-controller="flashcard-set">
+  <p data-flashcard-set-target="progress" class="text-ink-muted mb-3" style="font-size: 13px;">
+    Card 1 of <%= cards.size %>
+  </p>
 
-    <%= form_with url: submit_lesson_lesson_section_exercise_path(lesson, lesson_section, exercise), class: "flex gap-3" do %>
-      <button name="known" value="true" class="px-4 py-2 rounded-md bg-green-600 text-white font-medium hover:bg-green-700">
-        I knew it
+  <%= form_with url: submit_lesson_lesson_section_exercise_path(lesson, lesson_section, exercise) do %>
+
+    <div style="perspective: 1200px; position: relative; height: 280px;">
+      <% cards.each_with_index do |card, i| %>
+        <%= hidden_field_tag "known[#{i}]", "", data: { flashcard_set_target: "input" } %>
+
+        <div data-flashcard-set-target="card"
+             class="absolute inset-0 transition-all duration-800 ease-out opacity-0 translate-x-4 pointer-events-none">
+
+          <div data-flashcard-set-target="flipInner"
+               class="relative w-full h-full"
+               style="transform-style: preserve-3d; transition: transform 0.5s;">
+
+            <%# Front face %>
+            <div class="absolute inset-0 bg-white rounded-xl border border-border p-10 flex flex-col items-center justify-center text-center"
+                 style="backface-visibility: hidden;"
+                 data-action="click->flashcard-set#flip">
+              <p class="text-ink-muted uppercase font-semibold mb-3" style="font-size: 10px; letter-spacing: 0.1em;">Tap to reveal</p>
+              <h3 class="font-display text-ink" style="font-size: 2rem;"><%= card.dig("front", "word") %></h3>
+            </div>
+
+            <%# Back face %>
+            <div class="absolute inset-0 bg-white rounded-xl border border-border p-10 flex flex-col items-center justify-center text-center"
+                 style="backface-visibility: hidden; transform: rotateY(180deg);">
+              <h3 class="font-display text-ink mb-4" style="font-size: 2rem;"><%= card.dig("front", "word") %></h3>
+              <p class="text-ink text-lg mb-1"><%= card.dig("back", "translation") %></p>
+              <% if card.dig("back", "example").present? %>
+                <p class="text-ink-muted italic mb-8" style="font-size: 13px;"><%= card.dig("back", "example") %></p>
+              <% end %>
+
+              <div class="flex gap-3">
+                <button type="button"
+                        data-action="flashcard-set#mark"
+                        data-flashcard-set-known-param="false"
+                        class="rounded-xl font-semibold px-5 py-3 bg-white border border-accent-100 text-accent-700 hover:bg-accent-100 transition-colors">
+                  I didn't know it
+                </button>
+                <button type="button"
+                        data-action="flashcard-set#mark"
+                        data-flashcard-set-known-param="true"
+                        class="rounded-xl font-semibold px-5 py-3 bg-success-700 border border-success-700 text-white hover:opacity-90 transition-colors">
+                  I knew it
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <style>
+      [data-flashcard-set-target="flipInner"].flipped { transform: rotateY(180deg); }
+    </style>
+
+    <div class="mt-6 flex justify-end">
+      <button type="submit" data-flashcard-set-target="submit" disabled
+              class="rounded-xl font-semibold px-5 py-3 bg-primary-900 text-white disabled:bg-border disabled:text-ink-muted transition-colors">
+        Finish
       </button>
-      <button name="known" value="false" class="px-4 py-2 rounded-md bg-red-600 text-white font-medium hover:bg-red-700">
-        I didn't know it
-      </button>
-    <% end %>
-  <% else %>
-    <h3 class="text-2xl font-bold mb-4"><%= exercise.content.dig("front", "word") %></h3>
-    <%= link_to "Reveal", lesson_lesson_section_exercise_path(lesson, lesson_section, exercise, revealed: true),
-          class: "inline-block px-4 py-2 rounded-md bg-indigo-600 text-white font-medium hover:bg-indigo-700" %>
+    </div>
+
   <% end %>
 </div>
