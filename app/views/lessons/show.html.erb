@@ -1,37 +1,47 @@
-<div class="max-w-2xl mx-auto py-8 px-4">
-  <h1 class="text-3xl font-bold mb-2"><%= @lesson.title %></h1>
+<div class="max-w-2xl mx-auto px-6 py-12">
+
+  <h1 class="font-display text-4xl text-ink mb-2"><%= @lesson.title %></h1>
 
   <% if user_signed_in? %>
     <% if @lesson.completed_by?(current_user) %>
-      <p class="mb-8 text-green-700 font-medium">
+      <p class="mb-8 text-success-700 font-semibold" style="font-size: 14px;">
         Lesson complete — average score: <%= @lesson.score_for(current_user) %>%
       </p>
     <% else %>
-      <p class="mb-8 text-gray-500">Not yet completed</p>
+      <p class="mb-8 text-ink-muted" style="font-size: 14px;">Not yet completed</p>
     <% end %>
   <% end %>
 
-  <% @lesson.lesson_sections.each do |section| %>
-    <section class="mb-10">
-      <h2 class="text-xl font-semibold mb-1"><%= section.title %></h2>
+  <div class="space-y-6">
+    <% @lesson.lesson_sections.each do |section| %>
+      <div class="bg-white rounded-xl border border-border p-6">
 
-      <% if user_signed_in? && (score = section.score_for(current_user)) %>
-        <p class="text-sm text-gray-500 mb-4">Section score: <%= score %>%</p>
-      <% else %>
-        <p class="mb-4"></p>
-      <% end %>
-
-      <% section.exercises.each do |exercise| %>
-        <% score = @latest_scores[exercise.id] %>
-        <div class="flex items-center gap-3 mt-2">
-          <%= link_to (score ? "Review" : "Start"),
-              lesson_lesson_section_exercise_path(@lesson, section, exercise),
-              class: "inline-block px-4 py-2 rounded bg-black text-white" %>
-          <% if score %>
-            <span class="text-sm text-gray-500"><%= score %>%</span>
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="font-display text-xl text-ink"><%= section.title %></h2>
+          <% if user_signed_in? && (score = section.score_for(current_user)) %>
+            <span class="text-success-700 font-semibold" style="font-size: 13px;">Section score: <%= score %>%</span>
           <% end %>
         </div>
-      <% end %>
-    </section>
-  <% end %>
+
+        <div class="divide-y divide-border">
+          <% section.exercises.each do |exercise| %>
+            <% score = @latest_scores[exercise.id] %>
+            <div class="flex items-center justify-between py-3">
+              <span class="text-ink-secondary" style="font-size: 14px;"><%= exercise.exercise_type.humanize %></span>
+              <div class="flex items-center gap-3">
+                <% if score %>
+                  <span class="text-success-700 font-semibold" style="font-size: 13px;"><%= score %>%</span>
+                <% end %>
+                <%= render "shared/button", text: (score ? "Review" : "Start"),
+                    url: lesson_lesson_section_exercise_path(@lesson, section, exercise),
+                    variant: (score ? :secondary : :primary), size: :sm %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+
+      </div>
+    <% end %>
+  </div>
+
 </div>

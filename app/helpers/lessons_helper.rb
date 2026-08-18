@@ -12,4 +12,9 @@ module LessonsHelper
   def lesson_button_variant(state)
     state == :in_progress ? :primary : :secondary
   end
+
+  def section_state(section, current_section, user)
+    return :current if section == current_section
+    section.completed_by?(user) ? :completed : :upcoming
+  end
 end

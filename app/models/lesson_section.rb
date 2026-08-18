@@ -2,6 +2,17 @@ class LessonSection < ApplicationRecord
   belongs_to :lesson
   has_many :exercises, -> { order(:position) }, dependent: :destroy
 
+  def completed_by?(user)
+    exercise_ids = exercises.pluck(:id)
+    return false if exercise_ids.empty?
+
+    attempted_ids = ExerciseAttempt.for_user(user).completed
+                                    .where(exercise_id: exercise_ids)
+                                    .distinct.pluck(:exercise_id)
+
+    (exercise_ids - attempted_ids).empty?
+  end
+
   def score_for(user)
     exercise_ids = exercises.pluck(:id)
     return nil if exercise_ids.empty?

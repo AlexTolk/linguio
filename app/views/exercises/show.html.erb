@@ -1,14 +1,53 @@
-<div class="max-w-2xl mx-auto py-8 px-4">
+<div class="min-h-screen bg-surface">
 
-  <h1 class="text-3xl font-bold mb-2">
-    <%= @lesson.title %>
-  </h1>
+  <div class="border-b border-border bg-white">
+    <div class="max-w-3xl mx-auto px-6 py-4 flex items-center justify-between">
+      <%= link_to lesson_path(@lesson), class: "flex items-center gap-2 text-ink-muted hover:text-ink" do %>
+        <svg viewBox="0 0 20 20" fill="currentColor" style="width: 16px; height: 16px;">
+          <path fill-rule="evenodd" d="M11.78 5.22a.75.75 0 010 1.06L8.06 10l3.72 3.72a.75.75 0 11-1.06 1.06l-4.25-4.25a.75.75 0 010-1.06l4.25-4.25a.75.75 0 011.06 0z" clip-rule="evenodd" />
+        </svg>
+        <span style="font-size: 14px;">Exit</span>
+      <% end %>
 
-  <h2 class="text-xl font-semibold mb-6 text-gray-600">
-    <%= @lesson_section.title %>
-  </h2>
+      <div class="flex items-center gap-1">
+        <% @lesson.lesson_sections.each_with_index do |section, i| %>
+          <%
+            state = section_state(section, @lesson_section, current_user)
+            circle_classes = case state
+            when :completed then "bg-success-700 text-white"
+            when :current then "bg-primary-900 text-white"
+            else "bg-border text-ink-muted"
+            end
+          %>
+          <% if i > 0 %><div class="h-px bg-border" style="width: 20px;"></div><% end %>
+          <div class="flex flex-col items-center gap-1" style="min-width: 56px;">
+            <div class="flex items-center justify-center rounded-full font-bold <%= circle_classes %>" style="width: 22px; height: 22px; font-size: 10px;">
+              <% if state == :completed %>
+                <svg viewBox="0 0 20 20" fill="currentColor" style="width: 12px; height: 12px;">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                </svg>
+              <% else %>
+                <%= i + 1 %>
+              <% end %>
+            </div>
+            <span class="font-medium text-center <%= state == :current ? "text-primary-900" : "text-ink-muted" %>" style="font-size: 10px;">
+              <%= section.title %>
+            </span>
+          </div>
+        <% end %>
+      </div>
 
-  <%= render partial: @exercise.partial_path,
-        locals: { exercise: @exercise, lesson: @lesson, lesson_section: @lesson_section, revealed: params[:revealed] } %>
+      <div class="text-right">
+        <p class="text-ink-muted" style="font-size: 12px;"><%= @lesson.course_section.title %></p>
+        <p class="font-semibold text-ink" style="font-size: 14px;"><%= @lesson.title %></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="max-w-2xl mx-auto py-12 px-4">
+    <%= render partial: @exercise.partial_path,
+          locals: { exercise: @exercise, lesson: @lesson, lesson_section: @lesson_section,
+                     revealed: params[:revealed], section_position: @section_position, section_total: @section_total } %>
+  </div>
 
 </div>
