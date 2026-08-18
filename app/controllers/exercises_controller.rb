@@ -3,6 +3,8 @@ class ExercisesController < ApplicationController
   before_action :set_exercise
 
   def show
+    @section_position = @lesson_section.exercises.order(:position).pluck(:id).index(@exercise.id) + 1
+    @section_total = @lesson_section.exercises.count
   end
 
   def submit
@@ -69,7 +71,7 @@ class ExercisesController < ApplicationController
   def compute_score(item_keys: nil)
     case @exercise.exercise_type
     when "flashcard"
-      { score: params[:known] == "true" ? 100 : 0, answers: [] }
+      score_flashcards(item_keys: item_keys)
     when "matching"
       score_matching(item_keys: item_keys)
     when "fill_blank"
@@ -148,6 +150,25 @@ class ExercisesController < ApplicationController
       0
     end
 
+    { score: score, answers: answers }
+  end
+
+  def score_flashcards(item_keys: nil)
+    cards = @exercise.content["cards"].each_with_index.to_a
+    cards = cards.select { |_c, i| item_keys.include?(i.to_s) } if item_keys.present?
+    submitted = params[:known] || {}
+
+    answers = cards.map do |_card, i|
+      known = submitted[i.to_s] == "true"
+      {
+        item_key: i.to_s,
+        given_answer: known ? "known" : "unknown",
+        correct_answer: "known",
+        correct: known
+      }
+    end
+
+    score = answers.any? ? ((answers.count { |a| a[:correct] }.to_f / answers.size) * 100).round : 0
     { score: score, answers: answers }
   end
 end
