@@ -1,24 +1,47 @@
-<div class="space-y-4">
-  <% pairs = exercise.content["pairs"] %>
-  <% pairs = pairs.select { |p| item_keys.include?(p["left"]) } if local_assigns[:review_mode] %>
-  <% right_options = pairs.map { |p| p["right"] }.shuffle %>
+<%
+  pairs = exercise.content["pairs"]
+  pairs = pairs.select { |p| item_keys.include?(p["left"]) } if local_assigns[:review_mode]
+  right_options = pairs.map { |p| p["right"] }.shuffle
+  submit_url = local_assigns[:review_mode] ?
+    submit_review_lesson_lesson_section_exercise_path(lesson, lesson_section, exercise) :
+    submit_lesson_lesson_section_exercise_path(lesson, lesson_section, exercise)
+%>
 
-  <%= form_with url: (local_assigns[:review_mode] ?
-        submit_review_lesson_lesson_section_exercise_path(lesson, lesson_section, exercise) :
-        submit_lesson_lesson_section_exercise_path(lesson, lesson_section, exercise)) do %>
-    <div class="space-y-3">
-      <% pairs.each do |pair| %>
-        <div class="flex items-center gap-4">
-          <span class="font-medium w-32"><%= pair["left"] %></span>
-          <%= select_tag "matches[#{pair['left']}]",
-                options_for_select([["Choose...", ""]] + right_options.map { |r| [r, r] }),
-                class: "border rounded-md px-3 py-1" %>
-        </div>
-      <% end %>
+<div data-controller="matching">
+  <p class="text-ink font-semibold mb-1">Connect each French word to its English equivalent.</p>
+  <p class="text-ink-muted mb-6" style="font-size: 13px;">Select a word on the left, then its match on the right.</p>
+
+  <%= form_with url: submit_url do %>
+    <div class="grid grid-cols-2 gap-3">
+      <div class="space-y-2">
+        <% pairs.each do |pair| %>
+          <%= hidden_field_tag "matches[#{pair['left']}]", "", data: { matching_target: "input", matching_key: pair["left"] } %>
+          <div data-matching-target="left"
+               data-matching-key="<%= pair['left'] %>"
+               data-action="click->matching#selectLeft"
+               class="rounded-lg border border-border bg-white px-4 py-2.5 cursor-pointer select-none transition-colors hover:border-border-strong text-ink">
+            <%= pair["left"] %>
+          </div>
+        <% end %>
+      </div>
+
+      <div class="space-y-2">
+        <% right_options.each do |option| %>
+          <div data-matching-target="right"
+               data-matching-value="<%= option %>"
+               data-action="click->matching#selectRight"
+               class="rounded-lg border border-border bg-white px-4 py-2.5 cursor-pointer select-none transition-colors hover:border-border-strong text-ink">
+            <%= option %>
+          </div>
+        <% end %>
+      </div>
     </div>
 
-    <button type="submit" class="mt-4 px-4 py-2 rounded-md bg-indigo-600 text-white font-medium hover:bg-indigo-700">
-      <%= local_assigns[:review_mode] ? "Submit review" : "Submit" %>
-    </button>
+    <div class="mt-6 flex justify-end">
+      <button type="submit" data-matching-target="submit" disabled
+              class="rounded-xl font-semibold px-5 py-3 bg-primary-900 text-white disabled:bg-border disabled:text-ink-muted transition-colors">
+        <%= local_assigns[:review_mode] ? "Submit review" : "Submit" %>
+      </button>
+    </div>
   <% end %>
 </div>
