@@ -2,6 +2,7 @@ class Lesson < ApplicationRecord
   belongs_to :course_section
   has_many :lesson_sections, -> { order(:position) }, dependent: :destroy
   has_many :exercises, through: :lesson_sections
+  validates :position, presence: true
 
   def completed_by?(user)
     exercise_ids = exercises.pluck(:id)
