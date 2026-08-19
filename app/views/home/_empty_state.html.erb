@@ -1,0 +1,23 @@
+<div class="max-w-6xl mx-auto px-6 flex items-center justify-center" style="min-height: 60vh;">
+  <div class="text-center max-w-md">
+
+    <div class="mx-auto mb-6 flex items-center justify-center rounded-2xl bg-primary-100" style="width: 72px; height: 72px;">
+      <div class="flex gap-1">
+        <div class="rounded-sm bg-primary-900" style="width: 10px; height: 22px;"></div>
+        <div class="rounded-sm bg-white border border-border" style="width: 10px; height: 22px;"></div>
+        <div class="rounded-sm bg-accent-700" style="width: 10px; height: 22px;"></div>
+      </div>
+    </div>
+
+    <h1 class="font-display text-3xl text-ink mb-3">No courses started yet.</h1>
+    <p class="text-ink-secondary leading-relaxed mb-8">
+      Enroll in a course to begin your structured path to French fluency. Your progress, vocabulary, and scores will appear here.
+    </p>
+
+    <div class="flex items-center justify-center gap-3">
+      <%= render "shared/button", text: "Browse Courses", url: courses_path, variant: :primary %>
+      <%= render "shared/button", text: "Learn more", url: about_path, variant: :secondary %>
+    </div>
+
+  </div>
+</div>

@@ -1,33 +1,43 @@
 <% if user_signed_in? %>
 
-  <div class="max-w-6xl mx-auto px-6 py-12">
+  <% if @has_activity %>
+    <div class="max-w-6xl mx-auto px-6 py-12">
 
-    <h1 class="font-display text-4xl text-ink mb-2">Welcome back</h1>
-    <p class="text-ink-secondary mb-10">Pick up where you left off, or explore your courses.</p>
-
-    <% if @focus_course.present? %>
       <%
         _, _, focus_pct = course_progress(@focus_course, current_user)
-        focus_section = default_open_section(@focus_course, current_user)
       %>
 
-      <p class="text-ink-muted font-semibold uppercase mb-3" style="font-size: 11px; letter-spacing: 0.1em;">
-        <%= focus_pct == 100 ? "Completed — review any lesson" : "Continue in" %> <%= @focus_course.title %>
+      <h1 class="font-display text-4xl text-ink mb-2">
+        Welcome back to <%= @focus_course.title %>
+      </h1>
+      <p class="text-ink-secondary mb-10">
+        <% if focus_pct == 100 %>
+          You've completed this course — review any lesson, or
+        <% else %>
+          Continue where you left off, or
+        <% end %>
+        <%= link_to "choose a different course", courses_path, class: "text-primary-900 font-medium hover:underline" %>.
       </p>
 
+      <%
+        focus_section = default_open_section(@focus_course, current_user)
+      %>
       <div class="mb-10">
         <%= render "courses/section_breakdown", section: focus_section, course: @focus_course, user: current_user, index: focus_section.position, open: true %>
       </div>
-    <% end %>
 
-    <h2 class="font-display text-2xl text-ink mb-5">Your courses</h2>
-    <div class="grid md:grid-cols-3 gap-6">
-      <% @courses.each do |course| %>
-        <%= render "courses/course_card", course: course, user: current_user %>
-      <% end %>
+      <h2 class="font-display text-2xl text-ink mb-5">Your courses</h2>
+      <div class="grid md:grid-cols-3 gap-6">
+        <% @courses.each do |course| %>
+          <%= render "courses/course_card", course: course, user: current_user %>
+        <% end %>
+      </div>
+
     </div>
+  <% else %>
+    <%= render "home/empty_state" %>
+  <% end %>
 
-  </div>
 
 <% else %>
   <div class="bg-white border-b border-border">
