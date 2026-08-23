@@ -25,7 +25,7 @@ class Lesson < ApplicationRecord
     exercise_ids = exercises.pluck(:id)
     return nil if exercise_ids.empty?
 
-    latest_scores = ExerciseAttempt.for_user(user).completed
+    latest_scores = ExerciseAttempt.for_user(user).completed.lesson
                                     .where(exercise_id: exercise_ids)
                                     .order(completed_at: :desc)
                                     .group_by(&:exercise_id)

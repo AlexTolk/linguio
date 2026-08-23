@@ -6,7 +6,7 @@ class LessonSection < ApplicationRecord
     exercise_ids = exercises.pluck(:id)
     return false if exercise_ids.empty?
 
-    attempted_ids = ExerciseAttempt.for_user(user).completed
+    attempted_ids = ExerciseAttempt.for_user(user).completed.lesson
                                     .where(exercise_id: exercise_ids)
                                     .distinct.pluck(:exercise_id)
 

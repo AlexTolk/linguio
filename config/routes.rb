@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   devise_for :users
 
   root "home#index"
+
   resources :courses, only: [ :index, :show ]
 
   resources :lessons, only: [ :show ] do
@@ -10,6 +11,10 @@ Rails.application.routes.draw do
     end
 
     resources :lesson_sections, only: [] do
+      member do
+        get :complete
+      end
+
       resources :exercises, only: [ :show ] do
         post :submit, on: :member
         get :result, on: :member
