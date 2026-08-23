@@ -22,9 +22,12 @@ class ExercisesController < ApplicationController
       result[:answers].each { |a| attempt.exercise_attempt_answers.create!(a) }
     end
 
-    redirect_to result_lesson_lesson_section_exercise_path(
-      @lesson, @lesson_section, @exercise, attempt_id: attempt.id
-    )
+    next_exercise = @exercise.next_in_section
+    if next_exercise
+      redirect_to lesson_lesson_section_exercise_path(@lesson, @lesson_section, next_exercise)
+    else
+      redirect_to complete_lesson_lesson_section_path(@lesson, @lesson_section)
+    end
   end
 
   def result

@@ -14,11 +14,12 @@ class Exercise < ApplicationRecord
     exercise_type == "flashcard" ? "exercises/types/flashcards" : "exercises/types/#{exercise_type}"
   end
 
-  private
-
   def next_in_section
     lesson_section.exercises.where("position > ?", position).order(:position).first
   end
+
+  private
+
 
   def first_exercise_of_next_section
     next_section = lesson.lesson_sections
