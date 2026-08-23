@@ -1,22 +1,65 @@
-<div class="space-y-6">
-  <% questions = exercise.content["questions"].each_with_index.to_a %>
-  <% questions = questions.select { |_q, i| item_keys.include?(i.to_s) } if local_assigns[:review_mode] %>
+<%
+  questions = exercise.content["questions"].each_with_index.to_a
+  questions = questions.select { |_q, i| item_keys.include?(i.to_s) } if local_assigns[:review_mode]
+  submit_url = local_assigns[:review_mode] ?
+    submit_review_lesson_lesson_section_exercise_path(lesson, lesson_section, exercise) :
+    submit_lesson_lesson_section_exercise_path(lesson, lesson_section, exercise)
+%>
 
-  <%= form_with url: (local_assigns[:review_mode] ?
-        submit_review_lesson_lesson_section_exercise_path(lesson, lesson_section, exercise) :
-        submit_lesson_lesson_section_exercise_path(lesson, lesson_section, exercise)) do %>
-    <% questions.each do |q, i| %>
-      <div class="mb-4">
-        <p class="font-medium mb-1"><%= q["sentence"] %></p>
-        <% if q["hint"].present? %>
-          <p class="text-sm text-gray-400 mb-1"><%= q["hint"] %></p>
-        <% end %>
-        <%= text_field_tag "answers[#{i}]", nil, class: "border rounded-md px-3 py-1", autocomplete: "off" %>
-      </div>
-    <% end %>
+<div data-controller="fill-blank-carousel">
+  <p data-fill-blank-carousel-target="progress" class="text-ink-muted mb-3" style="font-size: 13px;">
+    1 of <%= questions.size %>
+  </p>
 
-    <button type="submit" class="px-4 py-2 rounded-md bg-indigo-600 text-white font-medium hover:bg-indigo-700">
-      <%= local_assigns[:review_mode] ? "Submit review" : "Submit" %>
-    </button>
+  <%= form_with url: submit_url do %>
+    <div style="position: relative; min-height: 200px;">
+      <% questions.each do |q, i| %>
+        <%
+          parts = q["sentence"].split("___", 2)
+          before, after = parts[0], parts[1]
+        %>
+        <div data-fill-blank-carousel-target="card"
+             class="absolute inset-0 bg-white rounded-xl border border-border p-8 flex flex-col items-center justify-center text-center transition-all duration-300 ease-out opacity-0 translate-x-4 pointer-events-none">
+
+          <p class="text-ink" style="font-size: 1.35rem;">
+            <%= before %><%= text_field_tag "answers[#{i}]", nil,
+                  autocomplete: "off",
+                  style: "width: 120px;",
+                  data: { fill_blank_carousel_target: "input", action: "input->fill-blank-carousel#updateNavState keydown.enter->fill-blank-carousel#handleEnter" },
+                  class: "inline-block border-0 border-b-2 border-primary-900 bg-transparent px-1 text-center font-semibold text-primary-900 focus:outline-none focus:ring-0" %><%= after %>
+          </p>
+
+          <% if q["hint"].present? %>
+            <div class="mt-4">
+              <button type="button"
+                      data-action="click->fill-blank-carousel#toggleHint"
+                      class="text-primary-900 font-medium hover:underline" style="font-size: 12px;">
+                Show hint
+              </button>
+              <p data-role="hint" class="invisible text-ink-muted italic mt-2" style="font-size: 13px;">
+                <%= q["hint"] %>
+              </p>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="mt-6 flex items-center justify-between">
+      <button type="button" data-fill-blank-carousel-target="prevButton" data-action="fill-blank-carousel#prev"
+              class="rounded-xl font-semibold px-5 py-3 bg-white border border-border text-ink hover:bg-surface transition-colors invisible">
+        ← Prev
+      </button>
+
+      <button type="button" data-fill-blank-carousel-target="nextButton" data-action="fill-blank-carousel#next" disabled
+              class="rounded-xl font-semibold px-5 py-3 bg-primary-900 text-white disabled:bg-border disabled:text-ink-muted transition-colors">
+        Next →
+      </button>
+
+      <button type="submit" data-fill-blank-carousel-target="submitButton" disabled
+              class="hidden rounded-xl font-semibold px-5 py-3 bg-primary-900 text-white disabled:bg-border disabled:text-ink-muted transition-colors">
+        <%= local_assigns[:review_mode] ? "Submit review" : "Submit" %>
+      </button>
+    </div>
   <% end %>
 </div>
