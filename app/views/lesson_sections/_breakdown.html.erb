@@ -1,0 +1,93 @@
+<%# Locals: section: [LessonSection], user: [User] %>
+<div class="bg-white rounded-xl border border-border p-6 mb-4">
+
+  <div class="flex items-center justify-between mb-4">
+    <h2 class="font-display text-xl text-ink"><%= section.title %></h2>
+    <% if (score = section.score_for(user)) %>
+      <span class="font-semibold <%= score >= 70 ? "text-success-700" : "text-accent-700" %>" style="font-size: 14px;">
+        Section score: <%= score %>%
+      </span>
+    <% end %>
+  </div>
+
+  <div class="space-y-6">
+    <% section_result_rows(section, user).each do |row| %>
+      <div>
+        <p class="text-ink-muted uppercase font-semibold mb-2" style="font-size: 10px; letter-spacing: 0.08em;">
+          <%= row[:exercise].exercise_type.humanize %>
+        </p>
+
+        <% if row[:answers].empty? %>
+          <p class="text-ink-muted italic" style="font-size: 13px;">No scored items in this exercise.</p>
+
+        <% elsif row[:exercise].exercise_type == "flashcard" %>
+          <div class="space-y-1.5">
+            <% row[:answers].each do |answer| %>
+              <div class="flex items-center gap-2 flex-wrap" style="font-size: 14px;">
+                <span class="text-ink font-medium"><%= flashcard_word(row[:exercise], answer) %></span>
+                <% if (translation = flashcard_translation(row[:exercise], answer)) %>
+                  <span class="text-ink-muted">— <%= translation %></span>
+                <% end %>
+                <% if answer.correct? %>
+                  <span class="text-success-700 font-semibold" style="font-size: 12px;">✓ Knew it</span>
+                <% else %>
+                  <span class="text-accent-700 font-semibold" style="font-size: 12px;">Review this one</span>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+
+        <% elsif row[:exercise].exercise_type == "fill_blank" %>
+          <div class="space-y-3">
+            <% row[:answers].each do |answer| %>
+              <p class="text-ink" style="font-size: 14px;"><%= fill_blank_inline_sentence(row[:exercise], answer) %></p>
+            <% end %>
+          </div>
+
+        <% elsif row[:exercise].exercise_type == "dialogue" %>
+          <div class="space-y-2.5">
+            <% dialogue_transcript_rows(row[:exercise], row[:answers]).each do |line| %>
+              <% if line[:type] == :context %>
+                <div class="text-right">
+                  <p class="text-ink-muted" style="font-size: 10px;"><%= line[:speaker] %></p>
+                  <p class="text-ink" style="font-size: 14px;"><%= line[:text] %></p>
+                </div>
+              <% else %>
+                <% answer = line[:answer] %>
+                <div>
+                  <p class="text-ink-muted" style="font-size: 10px;"><%= line[:speaker] %></p>
+                  <% if answer.nil? %>
+                    <p class="text-ink-muted italic" style="font-size: 13px;">Not answered</p>
+                  <% elsif answer.correct? %>
+                    <p class="text-success-700 font-semibold" style="font-size: 14px;">✓ <%= answer.correct_answer %></p>
+                  <% else %>
+                    <p style="font-size: 14px;">
+                      <span class="text-accent-700 line-through"><%= answer.given_answer.presence || "—" %></span>
+                      <span class="text-success-700 font-semibold">→ <%= answer.correct_answer %></span>
+                    </p>
+                  <% end %>
+                </div>
+              <% end %>
+            <% end %>
+          </div>
+
+        <% else %>
+          <div class="space-y-1.5">
+            <% row[:answers].each do |answer| %>
+              <div class="flex items-center gap-2 flex-wrap" style="font-size: 14px;">
+                <span class="text-ink"><%= answer.item_key %></span>
+                <% if answer.correct? %>
+                  <span class="text-success-700 font-semibold">✓ <%= answer.correct_answer %></span>
+                <% else %>
+                  <span class="text-accent-700 line-through"><%= answer.given_answer.presence || "—" %></span>
+                  <span class="text-success-700 font-semibold">→ <%= answer.correct_answer %></span>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+
+</div>

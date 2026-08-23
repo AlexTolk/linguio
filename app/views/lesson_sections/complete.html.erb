@@ -1,0 +1,21 @@
+<div class="max-w-2xl mx-auto px-6 py-12">
+
+  <p class="text-ink-muted mb-2" style="font-size: 13px;"><%= @lesson.title %></p>
+  <h1 class="font-display text-3xl text-ink mb-2"><%= @lesson_section.title %> complete</h1>
+  <% if @score %>
+    <p class="font-semibold mb-8 <%= @score >= 70 ? "text-success-700" : "text-accent-700" %>">
+      Section score: <%= @score %>%
+    </p>
+  <% end %>
+
+  <%= render "lesson_sections/breakdown", section: @lesson_section, user: current_user %>
+
+  <div class="mt-6 flex justify-end">
+    <% if @next_section %>
+      <%= render "shared/button", text: "Continue to #{@next_section.title} →", url: lesson_lesson_section_exercise_path(@lesson, @next_section, @next_section.exercises.order(:position).first) %>
+    <% else %>
+      <%= render "shared/button", text: "Finish lesson →", url: complete_lesson_path(@lesson) %>
+    <% end %>
+  </div>
+
+</div>
