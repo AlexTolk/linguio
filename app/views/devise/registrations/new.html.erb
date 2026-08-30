@@ -1,36 +1,67 @@
-<div class="min-h-screen flex items-center justify-center bg-gray-50 px-4">
-  <div class="w-full max-w-sm bg-white p-8 rounded-lg shadow">
-    <h2 class="text-2xl font-semibold text-center mb-6">Create an account</h2>
+<div class="min-h-screen flex items-center justify-center bg-surface px-4">
+  <div class="w-full max-w-sm">
 
-    <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-      <%= render "devise/shared/error_messages", resource: resource %>
-
-      <div class="mb-4">
-        <%= f.label :email, class: "block text-sm font-medium text-gray-700 mb-1" %>
-        <%= f.email_field :email, autofocus: true, autocomplete: "email",
-              class: "w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" %>
-      </div>
-
-      <div class="mb-4">
-        <%= f.label :password, class: "block text-sm font-medium text-gray-700 mb-1" %>
-        <% if @minimum_password_length %>
-          <em class="block text-xs text-gray-500 mb-1"><%= @minimum_password_length %> characters minimum</em>
-        <% end %>
-        <%= f.password_field :password, autocomplete: "new-password",
-              class: "w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" %>
-      </div>
-
-      <div class="mb-6">
-        <%= f.label :password_confirmation, "Confirm password", class: "block text-sm font-medium text-gray-700 mb-1" %>
-        <%= f.password_field :password_confirmation, autocomplete: "new-password",
-              class: "w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" %>
-      </div>
-
-      <%= f.submit "Sign up", class: "w-full bg-indigo-600 text-white py-2 rounded-md hover:bg-indigo-700" %>
-    <% end %>
-
-    <div class="mt-4 text-sm text-center text-gray-600">
-      <%= render "devise/shared/links" %>
+    <div class="text-center mb-6">
+      <%= link_to root_path, class: "font-display text-2xl text-primary-900" do %>Linguio<% end %>
+      <p class="font-display italic text-ink-secondary mt-1" style="font-size: 15px;">Commençons.</p>
     </div>
+
+    <div class="bg-white rounded-xl border border-border p-8">
+
+      <div class="flex rounded-lg bg-surface p-1 mb-6">
+        <%= link_to "Sign in", new_user_session_path,
+              class: "flex-1 text-center rounded-md font-semibold py-1.5 text-ink-muted hover:text-ink transition-colors", style: "font-size: 13px;" %>
+        <span class="flex-1 text-center rounded-md bg-white border border-border font-semibold py-1.5 text-ink" style="font-size: 13px;">
+          Create account
+        </span>
+      </div>
+
+      <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+        <%= render "devise/shared/error_messages", resource: resource %>
+
+        <div class="mb-4">
+          <%= f.label :email, "Email address", class: "block text-ink-muted font-semibold uppercase mb-1.5", style: "font-size: 11px; letter-spacing: 0.06em;" %>
+          <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "you@example.com",
+                class: "w-full rounded-xl border border-border px-3 py-2 focus:outline-none focus:border-primary-900" %>
+        </div>
+
+        <div class="mb-4" data-controller="password-visibility">
+          <%= f.label :password, "Password", class: "block text-ink-muted font-semibold uppercase mb-1.5", style: "font-size: 11px; letter-spacing: 0.06em;" %>
+          <% if @minimum_password_length %>
+            <p class="text-ink-muted mb-1.5" style="font-size: 12px;"><%= @minimum_password_length %> characters minimum</p>
+          <% end %>
+          <div class="relative">
+            <%= f.password_field :password, autocomplete: "new-password",
+                  data: { password_visibility_target: "input" },
+                  class: "w-full rounded-xl border border-border px-3 py-2 pr-14 focus:outline-none focus:border-primary-900" %>
+            <button type="button" data-action="password-visibility#toggle"
+                    class="absolute right-3 top-1/2 -translate-y-1/2 text-primary-900 font-medium" style="font-size: 12px;">
+              <span data-password-visibility-target="icon">Show</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="mb-6" data-controller="password-visibility">
+          <%= f.label :password_confirmation, "Confirm password", class: "block text-ink-muted font-semibold uppercase mb-1.5", style: "font-size: 11px; letter-spacing: 0.06em;" %>
+          <div class="relative">
+            <%= f.password_field :password_confirmation, autocomplete: "new-password",
+                  data: { password_visibility_target: "input" },
+                  class: "w-full rounded-xl border border-border px-3 py-2 pr-14 focus:outline-none focus:border-primary-900" %>
+            <button type="button" data-action="password-visibility#toggle"
+                    class="absolute right-3 top-1/2 -translate-y-1/2 text-primary-900 font-medium" style="font-size: 12px;">
+              <span data-password-visibility-target="icon">Show</span>
+            </button>
+          </div>
+        </div>
+
+        <%= f.submit "Create account →", class: "w-full rounded-xl font-semibold px-5 py-3 bg-primary-900 text-white hover:bg-primary-700 transition-colors cursor-pointer" %>
+      <% end %>
+
+    </div>
+
+    <p class="text-center text-ink-muted mt-6" style="font-size: 13px;">
+      Already have an account? <%= link_to "Sign in", new_user_session_path, class: "text-primary-900 font-medium hover:underline" %>
+    </p>
+
   </div>
 </div>
